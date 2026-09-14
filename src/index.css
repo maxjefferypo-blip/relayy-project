@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Ambient rotation for the capability marks. Duration, direction and a negative
+   delay (which sets the starting angle) are supplied per element. */
+@keyframes relay-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.shape-spin {
+  transform: rotate(var(--shape-rotate, 0deg));
+  animation: relay-spin linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shape-spin {
+    animation: none;
+  }
+}
+
+/* Ambient scale pulse for the capability marks. Layered on a separate element
+   from the spin so the two transforms compose instead of overwriting. */
+@keyframes relay-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+.shape-pulse {
+  animation: relay-pulse cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shape-pulse {
+    animation: none;
+  }
+}
+
+/* Logo marquee. The track is the logo set twice over, so -50% lands exactly on
+   the start of the second copy and the loop is invisible. */
+@keyframes relay-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee {
+  animation: relay-marquee 45s linear infinite;
+  will-change: transform;
+}
+
+.group:hover .logo-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee {
+    animation: none;
+  }
+}

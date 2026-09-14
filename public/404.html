@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found — Relay</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Standalone: the React app never mounts here, so the brand is inlined.
+         Keep in step with tailwind.config.js (accent) and the section grounds. */
+      :root { --accent: #5e0ed7; --ground: #f3f3f3; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100vh; background: var(--ground); color: #000;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        display: flex; flex-direction: column;
+      }
+      header { padding: 20px; }
+      @media (min-width: 768px) { header { padding: 24px 48px; } }
+      .mark {
+        width: 36px; height: 36px; border-radius: 999px; background: #000;
+        display: flex; align-items: center; justify-content: center;
+      }
+      /* height:auto or the HTML height attribute stretches the mark */
+      .mark img { width: 22px; height: auto; display: block; }
+      main {
+        flex: 1; display: flex; flex-direction: column; justify-content: center;
+        padding: 0 20px 64px;
+      }
+      @media (min-width: 768px) { main { padding: 0 48px 96px; } }
+      .eyebrow {
+        font-size: 10px; font-weight: 600; text-transform: uppercase;
+        letter-spacing: .18em; color: rgba(0,0,0,.5); margin: 0;
+      }
+      h1 {
+        margin: 20px 0 0; font-weight: 600; text-transform: uppercase;
+        font-size: clamp(1.625rem, 9px + 5.75vw, 7.5rem); line-height: .88;
+      }
+      p.lede {
+        margin: 28px 0 0; max-width: 34rem; font-size: 15px; font-weight: 500;
+        line-height: 1.7; color: rgba(0,0,0,.6);
+      }
+      @media (min-width: 640px) { p.lede { font-size: 16px; } }
+      a.cta {
+        margin-top: 40px; display: inline-flex; align-items: center; gap: 6px;
+        color: var(--accent); font-weight: 600; text-transform: uppercase;
+        letter-spacing: .02em; text-decoration: none; font-size: 16px;
+        width: fit-content; padding: 4px 0;
+      }
+      @media (min-width: 640px) { a.cta { font-size: 20px; } }
+      a.cta:hover { opacity: .7; }
+      footer {
+        border-top: 1px solid rgba(0,0,0,.2); margin: 0 20px; padding: 20px 0;
+        font-size: 10px; font-weight: 600; text-transform: uppercase;
+        letter-spacing: .18em; color: rgba(0,0,0,.5);
+      }
+      @media (min-width: 768px) { footer { margin: 0 48px; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="/" aria-label="Relay home">
+        <span class="mark"><img src="/relay-mark.png" alt="" width="320" height="206" /></span>
+      </a>
+    </header>
+
+    <main>
+      <p class="eyebrow">Error 404</p>
+      <h1>This page <br />doesn’t exist.</h1>
+      <p class="lede">
+        The link may be out of date, or the page may have moved. Everything Relay does lives on
+        the one page — head back and you’ll find it.
+      </p>
+      <a class="cta" href="/">Back to Relay <span aria-hidden="true">↗</span></a>
+    </main>
+
+    <footer>Relay · AI that makes business better</footer>
+  </body>
+</html>
