@@ -31,11 +31,11 @@ npm run preview  # serve the production build
    the host needs the variable configured too. A hidden honeypot field blocks
    basic bots; anything heavier needs the service's own spam filtering.
 3. **Confirm the domain.** Every absolute URL currently says
-   `https://relay.co.uk`. Update all five places — `index.html` (canonical,
+   `https://relayy.co.uk`. Update all five places — `index.html` (canonical,
    `og:url`, `og:image`, `twitter:image`, JSON-LD `url`/`logo`/`image`),
    `robots.txt` and `sitemap.xml` — or link previews break and the canonical
    points at nothing.
-4. `hello@relay.co.uk` appears in the form and the contact details — confirm it
+4. `hello@relayy.co.uk` appears in the form and the contact details — confirm it
    exists. There is deliberately **no phone number**; add one if you want it.
 5. Nav links all resolve to real sections (`#capabilities`, `#examples`,
    `#contact`). There is **no About section**, and "How It Works" was removed
@@ -59,6 +59,48 @@ npm run preview  # serve the production build
    Replace only when a client has agreed to be named.
 
 ---
+
+## Deployment
+
+Hosted on **Netlify**, building from `main` in this repo. `netlify.toml` holds
+the build command, publish directory and Node version, so a fresh site only
+needs "Import from Git" pointed at this repo — no dashboard build settings.
+
+There is deliberately **no SPA catch-all redirect**. This is one page with
+in-page hash nav, and a catch-all to `index.html` would stop `public/404.html`
+ever being served.
+
+**Set `VITE_FORM_ENDPOINT` in Netlify** (Site configuration → Environment
+variables) before launch. It is baked in at build time, so changing it needs a
+redeploy, not just a save. Without it the form falls back to `mailto:`.
+
+### Custom domain (relayy.co.uk, registered at GoDaddy)
+
+Two ways to wire it up. **Netlify DNS is the better option** — it gives the apex
+domain a proper ALIAS record that follows Netlify's load balancer, where GoDaddy
+can only point a fixed A record at one IP.
+
+**Option A — Netlify DNS (recommended).** Add the domain in Netlify (Domain
+management → Add a domain), and Netlify gives you four nameservers. In GoDaddy:
+My Products → the domain → Nameservers → Change → "I'll use my own nameservers",
+and paste all four. Propagation is usually under an hour but can take 48.
+
+**Option B — keep DNS at GoDaddy.** In GoDaddy's DNS manager:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | Netlify's apex load-balancer IP (confirm the current one in Netlify's Domain management panel) |
+| CNAME | `www` | `<your-site>.netlify.app` |
+
+Delete GoDaddy's default parking records first — a leftover A record on `@` or a
+`www` CNAME to `parkingpage` will win and the site won't resolve.
+
+Either way, let Netlify provision the Let's Encrypt certificate **after** DNS
+resolves, and set the primary domain (apex or `www`) in Netlify so the other
+redirects to it rather than both serving the same page.
+
+Once the domain is live, check the hardcoded URLs still match — see point 3 in
+*Before this goes live*.
 
 ## Architecture
 
