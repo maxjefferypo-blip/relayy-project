@@ -420,7 +420,7 @@ Checked and kept passing; re-check after editing copy or colour:
   wrapped in a `<main>` landmark.
 - **`ClipHeading` and the hero H1 add a trailing space to every line but the
   last.** Each line is its own block, so without it `textContent` runs them
-  together and the accessible name becomes "AI That MakesBusiness Better".
+  together and the accessible name becomes "Put AI To WorkIn Your Business.".
 - **Accent on dark uses `ACCENT_ON_DARK` (#B793ED), not `ACCENT`.** The brand
   purple is only 2.38:1 on `#0A0A0A`. The `Flow` arrows are also `aria-hidden`:
   chip order already carries the sequence, and "right arrow" between every step

@@ -103,10 +103,10 @@ export function LogoCloud({ logos, className, ...props }: LogoCloudProps) {
 }
 
 /**
- * Inline row of marks, sized to sit beside copy — used in the hero under the
- * headline. Same `Logo` shape as the grid, no cells or hover swap: at this size
- * a name-on-hover would be unreadable, so each mark keeps its `<title>` for
- * screen readers and nothing else.
+ * Inline row of marks, sized to sit beside copy. Same `Logo` shape as the grid,
+ * no cells or hover swap: at this size a name-on-hover would be unreadable, so
+ * each mark keeps its `<title>` for screen readers and nothing else. Wraps, so
+ * a set wider than its container runs onto a second line rather than clipping.
  */
 export function LogoRow({
   logos,
@@ -122,43 +122,6 @@ export function LogoRow({
       {logos.map((logo) => (
         <Mark key={logo.alt} logo={logo} size={light ? 'rowLight' : 'row'} />
       ))}
-    </div>
-  )
-}
-
-/**
- * The same marks, scrolling. The track holds the set twice and translates by
- * -50%, so the loop is seamless; `overflow-hidden` on the wrapper keeps it from
- * widening the page. Edge gradients fade it into the section rather than
- * letting marks appear and vanish at a hard boundary — pass the section colour
- * as `edge`. Pauses on hover, and `prefers-reduced-motion` stops it dead.
- */
-export function LogoMarquee({
-  logos,
-  light = false,
-  edge = '#0A0A0A',
-  className,
-}: LogoCloudProps & { light?: boolean; edge?: string }) {
-  const track = [...logos, ...logos]
-
-  return (
-    <div className={join('group relative overflow-hidden', className)}>
-      <div className="logo-marquee flex w-max items-center gap-x-10 sm:gap-x-14">
-        {track.map((logo, i) => (
-          <Mark key={`${logo.alt}-${i}`} logo={logo} size={light ? 'rowLight' : 'row'} />
-        ))}
-      </div>
-
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-20"
-        style={{ background: `linear-gradient(to right, ${edge}, transparent)` }}
-      />
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-20"
-        style={{ background: `linear-gradient(to left, ${edge}, transparent)` }}
-      />
     </div>
   )
 }

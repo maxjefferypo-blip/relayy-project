@@ -12,14 +12,17 @@ import {
   siXero,
   siZapier,
 } from "simple-icons";
-import { LogoMarquee, type Logo } from "@/components/ui/logo-cloud";
+import { LogoRow, type Logo } from "@/components/ui/logo-cloud";
 import { Body, ClipHeading, Eyebrow, Reveal, Section } from "./primitives";
 
 const SHAPE = "/shape-9.png";
 
 type Capability = {
   title: string;
-  body: string;
+  /** The result, stated plainly. Carries the weight in the cell. */
+  outcome: string;
+  /** How it is actually done — the "oh, it can do that" line. */
+  detail: string;
   /** Hue shift so one render reads as six distinct marks. */
   hue: number;
   /** Starting angle, kept when motion is reduced. */
@@ -33,8 +36,9 @@ type Capability = {
 
 const CAPABILITIES: Capability[] = [
   {
-    title: "Lead Conversion",
-    body: "Respond faster. Qualify better. Convert more.",
+    title: "Lead Response",
+    outcome: "Reply to new enquiries in seconds, while they’re still interested.",
+    detail: "Automatically respond, qualify and route leads before they go cold.",
     hue: 0,
     rotate: 0,
     spin: 12,
@@ -42,7 +46,10 @@ const CAPABILITIES: Capability[] = [
   },
   {
     title: "Follow-Up",
-    body: "Keep leads moving without relying on someone remembering.",
+    outcome:
+      "Keep leads moving without relying on someone remembering to chase them.",
+    detail:
+      "Personalised follow-ups across WhatsApp, SMS and email, triggered at the right time.",
     hue: 60,
     rotate: 52,
     spin: 14,
@@ -51,32 +58,42 @@ const CAPABILITIES: Capability[] = [
   },
   {
     title: "Bookings",
-    body: "Turn interest into confirmed appointments with less back-and-forth.",
+    outcome:
+      "Turn interest into confirmed appointments with less back-and-forth.",
+    detail:
+      "Handle availability, booking, reminders and common questions automatically.",
     hue: 125,
     rotate: 143,
     spin: 10,
     pulse: 2.7,
   },
   {
-    title: "CRM Automation",
-    body: "Keep customer data clean and useful without manual updates.",
-    hue: 190,
+    title: "Retention",
+    outcome: "Bring customers back before they quietly disappear.",
+    detail:
+      "Spot customers who are due to return, then trigger personalised rebooking and reactivation.",
+    hue: 250,
     rotate: 219,
     spin: 13,
     reverse: true,
     pulse: 3.8,
   },
   {
-    title: "Retention",
-    body: "Bring customers back before they quietly disappear.",
-    hue: 250,
+    title: "Admin & Reporting",
+    outcome:
+      "Take repetitive work off your team so they can focus on higher-value work.",
+    detail:
+      "Automate data entry, reporting, document handling and the routine tasks that eat up hours.",
+    hue: 190,
     rotate: 297,
     spin: 11,
     pulse: 4.9,
   },
   {
-    title: "Internal Workflows",
-    body: "Automate repetitive admin and free your team to focus on higher-value work.",
+    title: "Connected Business",
+    outcome: "Make the tools you already use work together.",
+    detail:
+      "Connect your CRM, bookings, website, email and other systems so customers and information move smoothly through your business.",
     hue: 310,
     rotate: 338,
     spin: 15,
@@ -108,10 +125,10 @@ export default function Capabilities() {
   return (
     <Section id="capabilities" className="bg-[#0A0A0A]">
       <div className="text-center">
-        <Eyebrow muted>What We Automate</Eyebrow>
+        <Eyebrow muted>What We Do</Eyebrow>
 
         <ClipHeading
-          lines={["The work that shouldn’t", "be manual anymore."]}
+          lines={["Find the opportunity.", "Build the system."]}
           className="mt-6 md:mt-8"
           /* 23 characters: the floor has to stay low or it wraps at 320px */
           size="clamp(1.1875rem, 5.5vw, 5rem)"
@@ -120,15 +137,15 @@ export default function Capabilities() {
 
         <Reveal index={1}>
           <Body light className="mx-auto mt-8 max-w-xl md:mt-10">
-            Relay helps you automate the parts of your business that slow
-            growth, waste time or let customers slip through the cracks.
+            Relay finds where AI and automation can help you make more money,
+            save time and work smarter, then builds it for you.
           </Body>
         </Reveal>
       </div>
 
       <div className="mt-10 grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:mt-14 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
           {CAPABILITIES.map(
-            ({ title, body, hue, rotate, spin, reverse, pulse }, i) => (
+            ({ title, outcome, detail, hue, rotate, spin, reverse, pulse }, i) => (
               /* Each cell reveals on its own, so the grid builds rather than
                 arriving in one block. */
               <Reveal
@@ -173,8 +190,11 @@ export default function Capabilities() {
                     {title}
                   </h3>
                 </div>
-                <p className="mt-4 max-w-[34ch] text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-                  {body}
+                <p className="mt-5 max-w-[34ch] text-sm font-semibold leading-snug text-white sm:text-base">
+                  {outcome}
+                </p>
+                <p className="mt-3 max-w-[38ch] text-sm font-medium leading-relaxed text-white/50">
+                  {detail}
                 </p>
               </Reveal>
             ),
@@ -186,14 +206,9 @@ export default function Capabilities() {
           <p className="text-center text-[11px] font-semibold uppercase tracking-widest text-white/40 sm:text-xs">
             Connects to the tools you already use
           </p>
-          {/* Full-bleed on mobile so the marquee runs edge to edge rather than
-            starting and stopping inside the section padding. */}
-          <LogoMarquee
-            logos={WORKS_WITH}
-            light
-            edge="#0A0A0A"
-            className="-mx-5 w-screen max-w-[calc(100%+2.5rem)] sm:-mx-8 sm:max-w-[calc(100%+4rem)] md:mx-0 md:w-full md:max-w-none"
-          />
+          {/* Wraps rather than scrolling, so every mark is visible at any
+            width instead of half the set sitting off-screen. */}
+          <LogoRow logos={WORKS_WITH} light className="justify-center" />
         </div>
       </Reveal>
     </Section>

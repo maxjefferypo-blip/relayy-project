@@ -90,7 +90,7 @@ export default function Approach() {
         <Eyebrow>How We Think</Eyebrow>
 
         <ClipHeading
-          lines={['Not every problem', 'needs AI.']}
+          lines={['Not everything', 'needs AI.']}
           className="mt-6 md:mt-8"
           size="clamp(1.5rem, 5vw, 4.5rem)"
         />
@@ -100,8 +100,10 @@ export default function Approach() {
         <div className="relative z-10 md:max-w-xl">
           <Reveal index={1}>
             <Body className="max-w-md">
-              Sometimes simple automation is enough. Sometimes AI makes the
-              process dramatically better. Relay uses both.
+              Sometimes a simple automation is enough. Sometimes AI can
+              understand, respond or decide in ways automation can’t. Usually
+              the best solution uses both. The goal isn’t more AI in your
+              business. It’s a better business.
             </Body>
           </Reveal>
         </div>

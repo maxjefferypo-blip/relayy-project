@@ -25,7 +25,7 @@ const EXAMPLES: Example[] = [
   {
     title: 'Wellness CRM',
     client: { name: 'Northside Spas', initials: 'NS', logo: '/clients/northside-spas.png' },
-    body: 'Connected bookings, customer history and follow-up into one flow, making it easier to track customers and drive repeat bookings.',
+    body: 'Turned booking data into repeat customers with one CRM that knows who’s new, who’s returning and who’s disappearing, with follow-up and rebooking handled automatically. More repeat visits. Less CRM admin.',
     flow: ['Booking', 'History', 'Follow-Up', 'Rebook'],
     span: 'sm:col-span-2 lg:col-span-3',
   },
@@ -34,14 +34,14 @@ const EXAMPLES: Example[] = [
     // The artwork is The FA's England Football mark; `name` is also the alt
     // text, so keep it in step with whatever the logo actually shows.
     client: { name: 'Matchday Club', initials: 'MC', logo: '/clients/matchday.png' },
-    body: 'Streamlined the journey from initial enquiry through to confirmed booking, connecting availability, quotes and customer communication.',
+    body: 'Turned enquiries into booked hospitality without the two-day wait, connecting availability, quotes and customer communication end to end. More enquiries converted. Less chasing.',
     flow: ['Enquiry', 'Availability', 'Quote', 'Confirm'],
     span: 'sm:col-span-2 lg:col-span-3',
   },
   {
     title: 'Padel Bookings',
     client: { name: 'Baseline', initials: 'BP', logo: '/clients/baseline.png' },
-    body: 'Automated booking confirmations, cancellations, rebooking and customer communication to reduce admin and help keep courts filled.',
+    body: 'Made the customer journey run itself: confirmations, cancellations, enquiries, follow-ups and re-engagement all handled automatically. More bookings. Better utilisation. Less admin.',
     flow: ['Book', 'Confirm', 'Refill', 'Rebook'],
     span: 'lg:col-span-2',
   },
@@ -54,14 +54,14 @@ const EXAMPLES: Example[] = [
   {
     title: 'Review Replies',
     client: { name: 'The Granary', initials: 'TG', logo: '/clients/the-granary.png' },
-    body: 'Watched for new reviews, drafted a reply in the venue’s own voice for one-click approval, and routed anything negative to a manager instead of answering it automatically.',
+    body: 'Watched for new reviews, drafted a reply in the venue’s own voice for one-click approval, and routed anything negative to a manager instead of answering it automatically. Better reputation. Minutes, not hours.',
     flow: ['Review', 'Draft', 'Approve', 'Post'],
     span: 'lg:col-span-2',
   },
   {
     title: 'Weekly Reporting',
     client: { name: 'Forge Fitness', initials: 'FF', logo: '/clients/forge-fitness.png' },
-    body: 'Pulled numbers from the booking, payment and membership systems into one plain-English summary every Monday, so nobody had to build the report by hand.',
+    body: 'Pulled numbers from the booking, payment and membership systems into one plain-English summary every Monday, so nobody had to build the report by hand. Clearer numbers. No manual reporting.',
     flow: ['Collect', 'Summarise', 'Send'],
     span: 'sm:col-span-2 lg:col-span-2',
   },
@@ -108,13 +108,17 @@ function ClientMark({ name, initials, logo }: Example['client']) {
 export default function Examples() {
   return (
     <Section id="examples" className="bg-[#0A0A0A]">
-      <div className="md:max-w-xl">
-        <Eyebrow muted>Example Systems</Eyebrow>
+      <div className="md:max-w-2xl">
+        <Eyebrow muted>Make It Real</Eyebrow>
 
+        {/* 17 characters on the long line, against 9 for the heading this
+          replaced. Each line is clipped to its own row, so one that wraps is
+          cut in half rather than flowing — the scale is set low enough that
+          both lines hold from 320px up. */}
         <ClipHeading
-          lines={['Happy', 'Customers']}
+          lines={['What this looks', 'like in practice.']}
           className="mt-6 md:mt-8"
-          size="clamp(1.75rem, 5vw, 4.5rem)"
+          size="clamp(1.25rem, 4.6vw, 3rem)"
           light
         />
       </div>

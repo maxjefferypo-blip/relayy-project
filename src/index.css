@@ -63,28 +63,3 @@ body {
   }
 }
 
-/* Logo marquee. The track is the logo set twice over, so -50% lands exactly on
-   the start of the second copy and the loop is invisible. */
-@keyframes relay-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.logo-marquee {
-  animation: relay-marquee 45s linear infinite;
-  will-change: transform;
-}
-
-.group:hover .logo-marquee {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo-marquee {
-    animation: none;
-  }
-}

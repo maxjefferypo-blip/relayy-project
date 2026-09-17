@@ -111,21 +111,22 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2">
             {/* Left — the pitch */}
             <div className="border-b border-black/15 p-6 sm:p-10 lg:border-b-0 lg:border-r lg:p-14">
-              <Eyebrow>Have Something In Mind?</Eyebrow>
+              <Eyebrow>Where Do We Start?</Eyebrow>
 
               <ClipHeading
-                lines={['Let’s see if we can', 'make it work better.']}
+                lines={['What could work', 'better?']}
                 className="mt-5 md:mt-6"
                 size="clamp(1.125rem, 2.6vw, 2.5rem)"
               />
 
               <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                Tell us what’s taking too much time, costing you customers, or simply not working
-                as well as it should.
+                You don’t need to know what AI you need, and you don’t need a technical brief.
+                Tell us about your business, what’s taking too much time, where customers are
+                being lost, or something you think should simply work better.
               </p>
 
               <p className="mt-4 max-w-md text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                We’ll show you where AI or automation could make the biggest difference.
+                We’ll find the opportunity, then build it.
               </p>
 
               <dl className="mt-10 flex flex-col gap-6 sm:mt-12">
@@ -222,7 +223,7 @@ export default function Contact() {
                   disabled={status === 'sending'}
                   className="group mt-2 flex w-full items-center justify-center gap-2 bg-black px-6 py-4 text-xs font-semibold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
                 >
-                  {status === 'sending' ? 'Sending…' : 'Let’s talk'}
+                  {status === 'sending' ? 'Sending…' : 'Tell us about your business'}
                   <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
 

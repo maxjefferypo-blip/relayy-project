@@ -13,9 +13,9 @@ const NAV_LINKS = [
 ]
 
 /** Proof points, not headlines — deliberately smaller than the h1. */
-const PROOF_POINTS = ['More Growth', 'Less Admin', 'Smarter Systems']
+const PROOF_POINTS = ['More Revenue', 'Less Manual Work', 'Better Systems']
 
-const HEADING_WORDS = ['AI That Makes', 'Business Better']
+const HEADING_WORDS = ['Put AI To Work', 'In Your Business.']
 
 const CTA_LABEL = 'Find Your Opportunity'
 
@@ -175,7 +175,7 @@ export default function Hero() {
                 {/* broken explicitly, so the line never runs across the orb */}
                 AI &amp; Automation
                 <br />
-                For Growing Businesses
+                For Business
               </p>
             </motion.div>
 
@@ -188,7 +188,10 @@ export default function Hero() {
                     transition={{ delay: 0.4 + i * 0.14, duration: 0.7, ease: EASE }}
                     className="block uppercase text-black"
                     style={{
-                      fontSize: 'clamp(1.625rem, 9px + 5.75vw, 7.5rem)',
+                      /* The longest line is now 17 characters (was 15), so
+                        the slope is pulled back ~12% to hold the same measure —
+                        at 320px the old one overran the 280px column. */
+                      fontSize: 'clamp(1.5rem, 6px + 5.2vw, 7rem)',
                       lineHeight: 0.88,
                       fontWeight: 600,
                     }}
