@@ -11,17 +11,17 @@ const PRINCIPLES = [
   {
     lead: 'Automation',
     rest: 'where rules work.',
-    body: 'Most of what slows a business down is predictable. Predictable work doesn’t need intelligence — it needs wiring.',
+    body: 'If something happens the same way every time, it probably shouldn’t need someone doing it manually. We automate the repetitive work that costs your team time.',
   },
   {
     lead: 'AI',
     rest: 'where intelligence helps.',
-    body: 'Reading intent, drafting a reply, spotting the customer about to leave. This is where AI earns its place.',
+    body: 'When the work needs to understand, respond, personalise or make sense of information, AI can take automation further. We use it where it genuinely adds value.',
   },
   {
     lead: 'People',
     rest: 'where judgement matters.',
-    body: 'The conversations that win the work stay human. We take the admin around them, not the relationship.',
+    body: 'Some things are better handled by people. We automate the work around your team, so they have more time for the conversations, decisions and relationships that matter.',
   },
 ]
 
@@ -101,9 +101,8 @@ export default function Approach() {
           <Reveal index={1}>
             <Body className="max-w-md">
               Sometimes a simple automation is enough. Sometimes AI can
-              understand, respond or decide in ways automation can’t. Usually
-              the best solution uses both. The goal isn’t more AI in your
-              business. It’s a better business.
+              understand, respond or decide in ways automation can’t. Knowing
+              which one you need is our job.
             </Body>
           </Reveal>
         </div>
