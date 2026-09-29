@@ -15,7 +15,7 @@ import {
 import { LogoRow, type Logo } from "@/components/ui/logo-cloud";
 import { Body, ClipHeading, Eyebrow, Reveal, Section } from "./primitives";
 
-const SHAPE = "/shape-9.png";
+const SHAPE = "/shape-9.webp";
 
 type Capability = {
   title: string;
@@ -46,8 +46,8 @@ const CAPABILITIES: Capability[] = [
   },
   {
     title: "Convert more customers",
-    outcome: "Turn more enquiries into customers with better follow-up.",
-    detail: "CRM setup, lead follow-up, booking journeys and automated nurture so fewer enquiries get lost.",
+    outcome: "Turn more enquiries into customers with faster replies and better follow-up.",
+    detail: "Instant lead response, CRM setup, follow-up and booking journeys, so fewer enquiries go cold.",
     hue: 125,
     rotate: 143,
     spin: 10,
@@ -90,16 +90,10 @@ export default function Capabilities() {
       <div className="text-center">
         <Eyebrow muted>What We Help With</Eyebrow>
 
-        <ClipHeading
-          lines={["More customers.", "Less work."]}
-          className="mt-6 md:mt-8"
-          /* 23 characters: the floor has to stay low or it wraps at 320px */
-          size="clamp(1.1875rem, 5.5vw, 5rem)"
-          light
-        />
+        <ClipHeading lines={["More customers.", "Less work."]} className="mt-6 md:mt-8" light />
 
         <Reveal index={1}>
-          <Body light className="mx-auto mt-8 max-w-xl !font-normal md:mt-10">
+          <Body light className="mx-auto mt-8 max-w-xl md:mt-10">
             Whether you need help generating leads, improving your CRM, automating
             follow-up or getting your marketing working properly, we build
             the systems that make it easier.
@@ -157,7 +151,7 @@ export default function Capabilities() {
                 <p className="mt-5 max-w-[34ch] text-sm font-semibold leading-snug text-white sm:text-base">
                   {outcome}
                 </p>
-                <p className="mt-3 max-w-[38ch] text-sm font-medium leading-relaxed text-white/50">
+                <p className="mt-3 max-w-[38ch] text-sm font-medium leading-relaxed text-white/50 sm:text-base">
                   {detail}
                 </p>
               </Reveal>

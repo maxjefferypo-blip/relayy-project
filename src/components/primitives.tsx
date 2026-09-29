@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { motion, useInView, type Variants } from 'framer-motion'
+import { m, useInView, type Variants } from 'framer-motion'
 
 export const ACCENT = '#5E0ED7'
 /** Accent tint for dark grounds: #5E0ED7 on #0A0A0A is only 2.38:1. */
@@ -70,7 +70,7 @@ export function Reveal({
   const [ref, revealed] = useReveal<HTMLDivElement>(0.25)
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       variants={fadeUp}
       initial="hidden"
@@ -79,7 +79,7 @@ export function Reveal({
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -101,12 +101,18 @@ export function Eyebrow({ children, muted = false }: { children: ReactNode; mute
 /**
  * Section heading using the hero's clip reveal — each line slides up out of an
  * overflow-hidden wrapper.
+ *
+ * The default `size` is the one section-heading size: ~22px on a phone, capped
+ * at 48px from ~1440px, so it always sits below the hero h1 (59px at 1440, 78px
+ * at 1920). Leave it alone per section — four sections with four sizes, two of
+ * them bigger than the h1, is what this replaced. Only headings inside a panel
+ * (Contact) go smaller.
  */
 export function ClipHeading({
   lines,
   className = '',
   light = false,
-  size = 'clamp(1.5rem, 5.5vw, 5rem)',
+  size = 'clamp(1.25rem, 0.75rem + 2.5vw, 3rem)',
 }: {
   lines: string[]
   className?: string
@@ -123,7 +129,7 @@ export function ClipHeading({
      * the word itself would never see an intersection and never fire.
      * Variants propagate from the parent instead.
      */
-    <motion.h2
+    <m.h2
       ref={ref}
       className={className}
       initial="hidden"
@@ -131,7 +137,7 @@ export function ClipHeading({
     >
       {lines.map((line, i) => (
         <span key={line} className="block overflow-hidden">
-          <motion.span
+          <m.span
             variants={{
               hidden: { y: '110%' },
               visible: {
@@ -145,10 +151,10 @@ export function ClipHeading({
             {/* trailing space: each line is its own block, so without it the
               accessible name concatenates the lines into one word */}
             {i < lines.length - 1 ? `${line} ` : line}
-          </motion.span>
+          </m.span>
         </span>
       ))}
-    </motion.h2>
+    </m.h2>
   )
 }
 

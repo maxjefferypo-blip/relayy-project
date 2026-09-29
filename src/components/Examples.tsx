@@ -111,14 +111,12 @@ export default function Examples() {
       <div className="md:max-w-2xl">
         <Eyebrow muted>Make It Real</Eyebrow>
 
-        {/* 17 characters on the long line, against 9 for the heading this
-          replaced. Each line is clipped to its own row, so one that wraps is
-          cut in half rather than flowing — the scale is set low enough that
-          both lines hold from 320px up. */}
+        {/* 17 characters on the long line, the longest of any section
+          heading. Each line is clipped to its own row, so one that wraps is cut
+          in half rather than flowing — check it at 320px if it grows. */}
         <ClipHeading
           lines={['What this looks', 'like in practice.']}
           className="mt-6 md:mt-8"
-          size="clamp(1.25rem, 4.6vw, 3rem)"
           light
         />
       </div>

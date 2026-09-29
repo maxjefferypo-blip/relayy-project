@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { motion, type Variants } from 'framer-motion'
+import { m, type Variants } from 'framer-motion'
 import { ArrowUpRight, X } from 'lucide-react'
-import { ORB_VIDEO } from '@/lib/media'
+import { ORB_POSTER, ORB_VIDEO } from '@/lib/media'
+import { LoopVideo } from '@/components/ui/loop-video'
 
 const ACCENT = '#5E0ED7'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -46,10 +47,10 @@ function Logo() {
   return (
     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black">
       <img
-        src="/relay-mark.png"
+        src="/relay-mark.webp"
         alt="Relay"
-        width={320}
-        height={206}
+        width={160}
+        height={103}
         className="w-[22px] select-none object-contain"
       />
     </div>
@@ -84,13 +85,10 @@ export default function Hero() {
   return (
     <div className="relative min-h-screen font-inter">
       {/* Background video */}
-      <video
-        className="absolute inset-0 h-full w-full object-cover object-[18%_center] sm:object-center"
+      <LoopVideo
         src={ORB_VIDEO}
-        autoPlay
-        muted
-        loop
-        playsInline
+        poster={ORB_POSTER}
+        className="absolute inset-0 h-full w-full object-cover object-[18%_center] sm:object-center"
       />
 
       {/* Mobile scrim. Portrait crops the orb across the copy, so the bottom of
@@ -106,13 +104,13 @@ export default function Hero() {
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Nav */}
         <nav className="flex items-center justify-between px-5 pt-5 sm:px-8 md:px-12 md:pt-6">
-          <motion.div variants={fadeDown} initial="hidden" animate="visible" custom={0}>
+          <m.div variants={fadeDown} initial="hidden" animate="visible" custom={0}>
             <Logo />
-          </motion.div>
+          </m.div>
 
           <div className="hidden items-center gap-8 md:flex lg:gap-10">
             {NAV_LINKS.map((link, i) => (
-              <motion.a
+              <m.a
                 key={link.label}
                 href={link.href}
                 variants={fadeDown}
@@ -122,11 +120,11 @@ export default function Hero() {
                 className="-my-1 py-1 text-xs font-semibold uppercase tracking-widest text-black transition-opacity duration-300 hover:opacity-60"
               >
                 {link.label}
-              </motion.a>
+              </m.a>
             ))}
           </div>
 
-          <motion.button
+          <m.button
             type="button"
             onClick={() => setMenuOpen(true)}
             variants={fadeDown}
@@ -139,7 +137,7 @@ export default function Hero() {
             <span className="h-0.5 w-4 bg-white" />
             <span className="h-0.5 w-4 bg-white" />
             <span className="h-0.5 w-4 bg-white" />
-          </motion.button>
+          </m.button>
         </nav>
 
         {/* The middle is deliberately empty — one message per level of the
@@ -153,7 +151,7 @@ export default function Hero() {
             <h1 className="w-full shrink-0 text-left md:w-auto md:text-right">
               {HEADING_WORDS.map((word, i) => (
                 <span key={word} className="block overflow-hidden">
-                  <motion.span
+                  <m.span
                     initial={{ y: '110%' }}
                     animate={{ y: 0 }}
                     transition={{ delay: 0.4 + i * 0.14, duration: 0.7, ease: EASE }}
@@ -166,12 +164,12 @@ export default function Hero() {
                     {/* trailing space so the accessible name is not
                       "MakesBusiness" — each line is its own block */}
                     {i < HEADING_WORDS.length - 1 ? `${word} ` : word}
-                  </motion.span>
+                  </m.span>
                 </span>
               ))}
             </h1>
 
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               animate="visible"
@@ -179,14 +177,14 @@ export default function Hero() {
               className="w-full min-w-0 md:order-first md:w-[200px] lg:w-[240px] xl:w-[270px]"
             >
               <p className="max-w-[34ch] text-left text-xs font-medium leading-relaxed text-black/70 md:text-sm">
-                Relay helps small businesses get more customers and save time
-                through practical marketing, automation and AI.
+                Relay helps small businesses turn more leads into customers, with
+                practical marketing, automation and AI.
               </p>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* CTA — above the headline on desktop, after it on mobile */}
-          <motion.a
+          <m.a
             href="#contact"
             variants={fadeUp}
             initial="hidden"
@@ -197,10 +195,10 @@ export default function Hero() {
           >
             {CTA_LABEL}
             <ArrowUpRight className="size-[14px] shrink-0 sm:size-4 md:size-[18px]" />
-          </motion.a>
+          </m.a>
 
           {/* Row C — proof points */}
-          <motion.ul
+          <m.ul
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -215,7 +213,7 @@ export default function Hero() {
                 {point}
               </li>
             ))}
-          </motion.ul>
+          </m.ul>
         </div>
       </div>
 

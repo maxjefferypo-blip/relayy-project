@@ -3,7 +3,7 @@ import { Check } from 'lucide-react'
 import { Body, ClipHeading, Eyebrow, Flow, Reveal, Section } from './primitives'
 
 const ACCENT = '#5E0ED7'
-const SHAPE = '/shape-9.png'
+const SHAPE = '/shape-9.webp'
 
 /**
  * The hero states "find the opportunity, build the system, measure the impact";
@@ -51,11 +51,7 @@ export default function Process() {
       <div className="md:max-w-2xl">
         <Eyebrow>How It Works</Eyebrow>
 
-        <ClipHeading
-          lines={['Three steps.', 'No mystery.']}
-          className="mt-6 md:mt-8"
-          size="clamp(1.75rem, 5vw, 4.5rem)"
-        />
+        <ClipHeading lines={['Three steps.', 'No mystery.']} className="mt-6 md:mt-8" />
 
         <Reveal index={1}>
           <Body className="mt-8 max-w-lg">

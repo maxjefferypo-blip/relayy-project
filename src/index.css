@@ -17,6 +17,16 @@ body {
   }
 }
 
+/* iOS paints a play button over any video that is not playing yet: while it
+   buffers, and for good when Low Power Mode refuses autoplay. These videos are
+   decorative and sit under the page's content, so nobody can tap it anyway —
+   the poster shows instead. See ui/loop-video.tsx. */
+.loop-video::-webkit-media-controls,
+.loop-video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 /* Ambient rotation for the capability marks. Duration, direction and a negative
    delay (which sets the starting angle) are supplied per element. */
 @keyframes relay-spin {

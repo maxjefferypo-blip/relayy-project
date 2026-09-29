@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { ORB_VIDEO } from '@/lib/media'
+import { ORB_POSTER, ORB_VIDEO_SMALL } from '@/lib/media'
+import { LoopVideo } from '@/components/ui/loop-video'
 import { Body, ClipHeading, Eyebrow, Reveal, Section } from './primitives'
 
 /** Start with the business problem, then choose the support that fits. */
@@ -22,46 +22,22 @@ const PRINCIPLES = [
 ]
 
 /**
- * The hero orb again, cropped square and small. Same asset, so it costs nothing
- * extra to load and the section reads as the same family as the hero rather
- * than introducing a second visual idea.
- *
- * Decoding video off-screen is wasted work that browsers only sometimes
- * throttle, so it is paused unless it is actually on screen.
+ * The hero orb again, small. Same frames at a lighter encode, and the same
+ * poster, so the section reads as the same family as the hero rather than
+ * introducing a second visual idea. It loads nothing until it scrolls in.
  */
 function Orb() {
-  const ref = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const video = ref.current
-    if (!video) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) void video.play().catch(() => {})
-        else video.pause()
-      },
-      { threshold: 0 },
-    )
-    observer.observe(video)
-    return () => observer.disconnect()
-  }, [])
-
   return (
-    <video
-      ref={ref}
-      src={ORB_VIDEO}
-      aria-hidden="true"
-      muted
-      loop
-      playsInline
-      preload="metadata"
+    <LoopVideo
+      src={ORB_VIDEO_SMALL}
+      poster={ORB_POSTER}
+      preload="none"
       /*
        * The box matches the video's own 3828x2164, so the whole frame is always
        * shown and the orb can never be cropped — it tumbles wider on some
        * frames, and a square crop was cutting it.
        */
-      className="aspect-[3828/2164] w-full max-w-[22rem] select-none object-cover sm:max-w-[26rem] md:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
+      className="aspect-[3828/2164] w-full max-w-[22rem] object-cover sm:max-w-[26rem] md:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
       style={{
         /*
          * The video's ground is #f2f2f0-#f3f3f3 (compression), so no flat
@@ -85,11 +61,7 @@ export default function Approach() {
       <div className="relative z-10">
         <Eyebrow>Our Approach</Eyebrow>
 
-        <ClipHeading
-          lines={['Built around', 'your business.']}
-          className="mt-6 md:mt-8"
-          size="clamp(1.5rem, 5vw, 4.5rem)"
-        />
+        <ClipHeading lines={['Built around', 'your business.']} className="mt-6 md:mt-8" />
       </div>
 
       <div className="mt-6 md:mt-10 md:flex md:items-start md:justify-between md:gap-10 lg:gap-16">

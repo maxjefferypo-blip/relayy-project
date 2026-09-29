@@ -197,7 +197,7 @@ export default function Contact() {
                     name="problem"
                     required
                     rows={4}
-                    placeholder="For example: we need more enquiries, our CRM is a mess, or follow-up takes too much time..."
+                    placeholder="For example: we need more enquiries, leads go cold before we reply, or our CRM is a mess..."
                     value={values.problem}
                     onChange={(e) => setValues((v) => ({ ...v, problem: e.target.value }))}
                     className={`${inputClass} resize-none`}

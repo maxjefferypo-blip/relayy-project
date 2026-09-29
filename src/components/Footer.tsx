@@ -17,6 +17,7 @@ const INDEX = [
   { label: 'Our Approach', href: '#approach' },
   { label: 'Examples', href: '#examples' },
   { label: 'Contact', href: '#contact' },
+  { label: 'FAQ', href: '#faq' },
 ]
 
 const CELL = 'bg-[#0A0A0A] px-6 py-8 sm:px-7 sm:py-10 md:px-9 md:py-12'
@@ -34,11 +35,11 @@ export default function Footer() {
             <div className="flex items-center gap-3.5">
               {/* dark ground here, so the mark needs no disc behind it */}
               <img
-                src="/relay-mark.png"
+                src="/relay-mark.webp"
                 alt=""
                 aria-hidden="true"
-                width={320}
-                height={206}
+                width={160}
+                height={103}
                 className="w-9 select-none object-contain"
               />
               <span className="text-sm font-semibold uppercase tracking-widest text-white">
@@ -47,7 +48,7 @@ export default function Footer() {
             </div>
 
             <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-              Relay helps small businesses get more customers and save time through
+              Relay helps small businesses turn more leads into customers, with
               practical marketing, automation and AI. One specific problem or
               ongoing support, built around your business.
             </p>
@@ -99,7 +100,9 @@ export default function Footer() {
 
       <Reveal index={2}>
         <div className="mt-10 flex flex-col items-center gap-3 border-t border-white/15 pt-8 text-[10px] font-semibold uppercase tracking-widest text-white/40 sm:mt-12 sm:flex-row sm:justify-between sm:text-xs">
-          <p>© {new Date().getFullYear()} Relay</p>
+          {/* Prerendered at build time, so after New Year the HTML says last
+            year until the next deploy; the client corrects it silently. */}
+          <p suppressHydrationWarning>© {new Date().getFullYear()} Relay</p>
           <p>More customers. Better follow-up. Less admin.</p>
         </div>
       </Reveal>

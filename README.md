@@ -1,15 +1,15 @@
 # Relay
 
 Marketing site for Relay — AI and automation consultancy for growing businesses.
-Single-page React app: hero, capability grid, thesis section, work examples and
-an enquiry form.
+Single-page React app, prerendered to static HTML at build time: hero,
+capability grid, thesis section, work examples, enquiry form and FAQ.
 
 React 19 · TypeScript · Vite 8 · Tailwind CSS 3.4 · Framer Motion 13 · Lucide
 
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # tsc -b && vite build
+npm run build    # tsc -b, vite build, then prerender (see Prerendering)
 npm run lint     # oxlint
 npm run preview  # serve the production build
 ```
@@ -18,10 +18,9 @@ npm run preview  # serve the production build
 
 ## Before this goes live
 
-1. **The video is hotlinked from a third-party CDN.** Host your own copy before
-   launch, and add a `poster` image so there's no flash before the first frame.
-   It is used twice now (hero background, Approach companion) but the URL lives
-   in `src/lib/media.ts`, so it is still one line to change.
+1. **The orb video is self-hosted** in `src/assets/` (see *The orb video*). The
+   original master is still on a third-party CDN, with its URL kept in
+   `src/lib/media.ts`. Save a copy somewhere you control before that link dies.
 2. **The enquiry form posts to `VITE_FORM_ENDPOINT`** — see `.env.example`.
    Set it to a form-to-email endpoint (Formspree's free tier needs no backend)
    and put the destination address in that service's dashboard, not in the code,
@@ -104,7 +103,7 @@ Once the domain is live, check the hardcoded URLs still match — see point 3 in
 
 ## Architecture
 
-The page renders five sections, in this order (`src/App.tsx`):
+The page renders six sections, in this order (`src/App.tsx`):
 
 | Section | File | Purpose |
 | --- | --- | --- |
@@ -113,6 +112,7 @@ The page renders five sections, in this order (`src/App.tsx`):
 | Approach | `Approach.tsx` | "Not everything needs AI." The thesis |
 | Examples | `Examples.tsx` | Five-cell bento of delivered work |
 | Contact | `Contact.tsx` | Enquiry form |
+| FAQ | `FAQ.tsx` | Five questions, native `<details>` accordion |
 | Footer | `Footer.tsx` | Logo, positioning line, email, copyright |
 
 **Two sections are parked** — present in the repo, not rendered:
@@ -130,26 +130,29 @@ The page renders five sections, in this order (`src/App.tsx`):
   (`Reveal`, `ClipHeading`, `Flow`).
 - `src/components/ui/logo-cloud.tsx` — reusable logo marks (`LogoCloud`,
   `LogoRow`, `LogoMarquee`), on the shadcn-convention path.
-- `src/lib/media.ts` — `ORB_VIDEO`, the hero orb, imported by both Hero and
-  Approach so there is one URL to change when you self-host it.
-- `src/lib/utils.ts` — `cn()` (clsx + tailwind-merge).
+- `src/components/ui/loop-video.tsx` — `LoopVideo`, the muted decorative video
+  both orbs use. See *The orb video*.
+- `src/lib/media.ts` — the orb's two encodes and poster, imported by both Hero
+  and Approach so there is one place to change them.
+- `src/entry-server.tsx` + `scripts/prerender.mjs` — see *Prerendering*.
 - `src/index.css` — Tailwind directives and base resets.
 - `tailwind.config.js` — `font-inter` and an `accent` colour (`#5E0ED7`).
 - Inter is loaded from Google Fonts in `index.html`.
 
 ### Brand assets
 
-- `public/relay-mark.png` — the brand mark. The supplied render had the black
-  background baked in (no alpha), so it was decoded, given alpha from per-pixel
-  luminance, un-premultiplied, cropped to the artwork and downscaled. The
-  1536x1024 master is in `assets-src/`. On light ground (nav, mobile menu) the
-  mark sits on a black disc, because its highlights are near-white; on dark
-  ground (footer) it is used directly.
+- `public/relay-mark.webp` — the brand mark, 160px wide (17kB; it never shows
+  wider than 36px). Made from `assets-src/relay-mark.png`, the 320px version
+  with alpha: the supplied render had the black background baked in, so it was
+  decoded, given alpha from per-pixel luminance, un-premultiplied, cropped to
+  the artwork and downscaled. The 1536x1024 master is in `assets-src/` too. On
+  light ground (nav, mobile menu) the mark sits on a black disc, because its
+  highlights are near-white; on dark ground (footer) it is used directly.
 - `public/favicon-32.png`, `favicon-16.png`, `apple-touch-icon.png` (180) and
   `favicon-512.png` — the brand mark on black, at 80% of the square. Black
   because the mark's highlights are near-white and would vanish on a light
   browser tab, the same reason the nav puts it on a disc. Rendered from
-  `relay-mark.png` via headless Chromium; regenerate all four together if the
+  `assets-src/relay-mark.png` via headless Chromium; regenerate all four together if the
   mark changes. There is no `.ico` and no vector — the source is raster.
 
 `assets-src/` holds the high-resolution masters and sits **outside** `public/`,
@@ -180,7 +183,7 @@ reads.
 <details>
 <summary><strong>Capabilities</strong> — one image doing six jobs</summary>
 
-Dark 3x2 feature grid. Card marks are one render (`public/shape-9.png`) given a
+Dark 3x2 feature grid. Card marks are one render (`public/shape-9.webp`, 12kB) given a
 per-card `hue-rotate` and rotation, so a single file reads as six distinct
 icons. The 4000x4000 master lives in `assets-src/` — outside `public/`, so it
 never ships.
@@ -294,11 +297,11 @@ background. The hero states the line; this section earns it.
 </details>
 
 <details>
-<summary><strong>Footer</strong> — why there's no section index</summary>
+<summary><strong>Footer</strong> — the full index lives here</summary>
 
-Logo, positioning line, email, centred copyright. Deliberately has no section
-index: this is one page, the nav already lists the sections, and the contact
-form sits directly above it.
+Logo, positioning line, section index, email, centred copyright. The nav is
+kept to three links on purpose, so the footer is where every section is listed,
+including Approach and FAQ.
 
 </details>
 
@@ -343,6 +346,38 @@ makes `./ui` imports ambiguous.
 
 ---
 
+## The orb video
+
+The master is 3828x2164 at 17.5Mbps (22MB for a 10s loop). iOS Safari won't
+autoplay until it predicts it can play through without stalling, so on any
+connection slower than that it waited for most of the file. It showed its own
+play button in the meantime, and nobody could tap it because the hero's content
+covers the video. Three fixes, and **all three matter**:
+
+- **Re-encoded and self-hosted.** `orb-1920.mp4` (2.7MB) for the hero and
+  `orb-1280.mp4` (1.6MB) for Approach's companion. Both are imported through
+  Vite, so they are content-hashed and fall under the `/assets/*` immutable cache
+  header. Netlify serves byte ranges (206), which Safari needs for video.
+- **A poster** (`orb-poster.webp`, the first frame) shows before playback, and
+  stays up if autoplay is refused (iOS Low Power Mode, Android Data Saver).
+- **`LoopVideo`** hides the iOS play button (`.loop-video` in `index.css`), sets
+  `muted` before calling `play()`, retries on the first tap or key press, and
+  pauses off-screen. Approach's copy has `preload="none"`, so it loads nothing
+  until it scrolls in.
+
+To regenerate from the master, with any ffmpeg (`npx ffmpeg-static` works
+without installing one):
+
+```bash
+ffmpeg -i master.mp4 -vf "scale=1920:-2:flags=lanczos" -c:v libx264 -profile:v high \
+  -preset slower -crf 24 -pix_fmt yuv420p -movflags +faststart -an src/assets/orb-1920.mp4
+# same again with scale=1280:-2 for orb-1280.mp4, then the poster:
+ffmpeg -i src/assets/orb-1920.mp4 -frames:v 1 -c:v libwebp -quality 80 src/assets/orb-poster.webp
+```
+
+Keep `-movflags +faststart` (the index goes at the front, so playback can start
+before the download ends) and keep the bitrate well under mobile bandwidth.
+
 ## Mobile
 
 - **Hero order changes below `md`.** The bottom block is a column whose
@@ -365,6 +400,11 @@ makes `./ui` imports ambiguous.
   not stop the page scrolling underneath on touch.
 
 ## Headings
+
+**Every section heading uses `ClipHeading`'s default size** (~22px on a phone,
+48px from ~1440px), so none of them outranks the hero h1 (59px at 1440, 78px at
+1920). Don't pass a per-section `size`. Only Contact's heading, which sits
+inside a half-width panel, goes smaller.
 
 `ClipHeading` renders each line inside its own `overflow-hidden` wrapper, so a
 line too long for its container wraps *inside* the clip: the reveal then slides
@@ -398,14 +438,40 @@ one with the orb squeezed it until it wrapped.
 
 All use `ease: [0.22, 1, 0.36, 1]`.
 
+**Use `m.div`, not `motion.div`.** `App.tsx` wraps the page in `LazyMotion` with
+the DOM feature set, which took ~13kB gzipped off the bundle. It is `strict`,
+so a `motion.*` component throws instead of quietly pulling the full bundle back.
+
 ## SEO and social
 
 `index.html` carries the title, description, canonical, Open Graph and Twitter
 card tags, and `ProfessionalService` JSON-LD. `public/` has `robots.txt`,
 `sitemap.xml`, a branded `404.html` (standalone — the React app never mounts
-there, so the brand is inlined) and `og-image.png` (1200x630, generated from
-the brand mark — logo-forward, since link previews in WhatsApp and Slack are
-small and brand recognition matters more there than a headline).
+there, so the brand is inlined) and `og-image.png` (1200x630, logo-forward,
+since link previews in WhatsApp and Slack are small and brand recognition
+matters more there than a headline). Its source is `assets-src/og-image.html`,
+with the command to re-render it at the top. **Re-render it when the hero copy
+changes**: it repeats the h1 and the proof strip, and it had drifted to a
+positioning two versions old.
+
+There is **no FAQPage JSON-LD** on purpose. Google shows FAQ rich results only
+for government and health sites now; the answers are plain HTML instead, which
+is what search and AI crawlers read.
+
+### Prerendering
+
+`npm run build` renders the page to HTML (`src/entry-server.tsx`) and
+`scripts/prerender.mjs` writes it into `dist/index.html`. The client then
+hydrates it (`hydrateRoot` in `main.tsx`); the dev server still renders from
+scratch. Without it the HTML is an empty `<div id="root">`. Google runs the JS,
+but most AI crawlers (GPTBot, ClaudeBot, PerplexityBot), link-preview bots and
+at times Bing don't, so to them the page was blank.
+
+What that asks of the code: **nothing may render differently on the server and
+the client.** Keep `window`, `document`, `Date` and random values out of render
+and in effects or handlers. The footer year is the one exception, and carries
+`suppressHydrationWarning`. Reveals still start hidden in the HTML, which is
+fine: crawlers read the text, not the opacity.
 
 `404.html` is served automatically by Netlify, Vercel and GitHub Pages. Other
 hosts may need it wired up explicitly.

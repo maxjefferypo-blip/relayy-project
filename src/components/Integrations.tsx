@@ -35,8 +35,8 @@ export default function Integrations() {
         lines={['Works with what you use.']}
         className="mt-6 md:mt-8"
         /* one long line, so the floor drops further than the section default
-           to keep it unwrapped down to 320px */
-        size="clamp(1.125rem, 5.5vw, 5rem)"
+           to keep it unwrapped down to 320px; same 48px cap */
+        size="clamp(1.125rem, 5.5vw, 3rem)"
       />
 
       <div className="mt-10 max-w-2xl md:mt-12">
