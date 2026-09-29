@@ -36,69 +36,32 @@ type Capability = {
 
 const CAPABILITIES: Capability[] = [
   {
-    title: "Lead Response",
-    outcome: "Reply to new enquiries in seconds, while they’re still interested.",
-    detail: "Automatically respond, qualify and route leads before they go cold.",
+    title: "Generate more leads",
+    outcome: "Bring more opportunities into your business.",
+    detail: "Campaigns, landing pages, outreach and practical marketing designed to help the right customers find you.",
     hue: 0,
     rotate: 0,
     spin: 12,
     pulse: 3.1,
   },
   {
-    title: "Follow-Up",
-    outcome:
-      "Keep leads moving without relying on someone remembering to chase them.",
-    detail:
-      "Personalised follow-ups across WhatsApp, SMS and email, triggered at the right time.",
-    hue: 60,
-    rotate: 52,
-    spin: 14,
-    reverse: true,
-    pulse: 4.3,
-  },
-  {
-    title: "Bookings",
-    outcome:
-      "Turn interest into confirmed appointments with less back-and-forth.",
-    detail:
-      "Handle availability, booking, reminders and common questions automatically.",
+    title: "Convert more customers",
+    outcome: "Turn more enquiries into customers with better follow-up.",
+    detail: "CRM setup, lead follow-up, booking journeys and automated nurture so fewer enquiries get lost.",
     hue: 125,
     rotate: 143,
     spin: 10,
     pulse: 2.7,
   },
   {
-    title: "Retention",
-    outcome: "Bring customers back before they quietly disappear.",
-    detail:
-      "Spot customers who are due to return, then trigger personalised rebooking and reactivation.",
+    title: "Automate the repetitive stuff",
+    outcome: "Spend less time on admin and more time on your business.",
+    detail: "Marketing automation, customer reminders, review requests, reactivation campaigns and AI-powered workflows.",
     hue: 250,
     rotate: 219,
     spin: 13,
     reverse: true,
     pulse: 3.8,
-  },
-  {
-    title: "Admin & Reporting",
-    outcome:
-      "Take repetitive work off your team so they can focus on higher-value work.",
-    detail:
-      "Automate data entry, reporting, document handling and the routine tasks that eat up hours.",
-    hue: 190,
-    rotate: 297,
-    spin: 11,
-    pulse: 4.9,
-  },
-  {
-    title: "Connected Business",
-    outcome: "Make the tools you already use work together.",
-    detail:
-      "Connect your CRM, bookings, website, email and other systems so customers and information move smoothly through your business.",
-    hue: 310,
-    rotate: 338,
-    spin: 15,
-    reverse: true,
-    pulse: 3.4,
   },
 ];
 
@@ -125,10 +88,10 @@ export default function Capabilities() {
   return (
     <Section id="capabilities" className="bg-[#0A0A0A]">
       <div className="text-center">
-        <Eyebrow muted>What We Do</Eyebrow>
+        <Eyebrow muted>What We Help With</Eyebrow>
 
         <ClipHeading
-          lines={["Find the opportunity.", "Build the system."]}
+          lines={["More customers.", "Less work."]}
           className="mt-6 md:mt-8"
           /* 23 characters: the floor has to stay low or it wraps at 320px */
           size="clamp(1.1875rem, 5.5vw, 5rem)"
@@ -136,14 +99,15 @@ export default function Capabilities() {
         />
 
         <Reveal index={1}>
-          <Body light className="mx-auto mt-8 max-w-xl md:mt-10">
-            Relay finds where AI and automation can help you make more money,
-            save time and work smarter, then builds it for you.
+          <Body light className="mx-auto mt-8 max-w-xl !font-normal md:mt-10">
+            Whether you need help generating leads, improving your CRM, automating
+            follow-up or getting your marketing working properly, we build
+            the systems that make it easier.
           </Body>
         </Reveal>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:mt-14 sm:grid-cols-2 md:mt-20 lg:grid-cols-3">
+      <div className="mt-10 grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:mt-14 md:mt-20 lg:grid-cols-3">
           {CAPABILITIES.map(
             ({ title, outcome, detail, hue, rotate, spin, reverse, pulse }, i) => (
               /* Each cell reveals on its own, so the grid builds rather than

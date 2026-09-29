@@ -14,7 +14,7 @@ const CONTACT_EMAIL = 'hello@relayy.co.uk'
  */
 const INDEX = [
   { label: 'What We Do', href: '#capabilities' },
-  { label: 'How We Think', href: '#approach' },
+  { label: 'Our Approach', href: '#approach' },
   { label: 'Examples', href: '#examples' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -47,8 +47,9 @@ export default function Footer() {
             </div>
 
             <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-              Relay helps businesses put AI to work. Finding the opportunities to make more
-              money, save time and work smarter, then building the systems to make it happen.
+              Relay helps small businesses get more customers and save time through
+              practical marketing, automation and AI. One specific problem or
+              ongoing support, built around your business.
             </p>
           </div>
 
@@ -99,7 +100,7 @@ export default function Footer() {
       <Reveal index={2}>
         <div className="mt-10 flex flex-col items-center gap-3 border-t border-white/15 pt-8 text-[10px] font-semibold uppercase tracking-widest text-white/40 sm:mt-12 sm:flex-row sm:justify-between sm:text-xs">
           <p>© {new Date().getFullYear()} Relay</p>
-          <p>Put AI to work in your business</p>
+          <p>More customers. Better follow-up. Less admin.</p>
         </div>
       </Reveal>
     </footer>

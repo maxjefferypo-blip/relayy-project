@@ -13,11 +13,11 @@ const NAV_LINKS = [
 ]
 
 /** Proof points, not headlines — deliberately smaller than the h1. */
-const PROOF_POINTS = ['More Revenue', 'Less Manual Work', 'Better Systems']
+const PROOF_POINTS = ['More Customers', 'Better Follow-Up', 'Less Admin']
 
-const HEADING_WORDS = ['Put AI To Work', 'In Your Business.']
+const HEADING_WORDS = ['Better Marketing.', 'Smarter Automation.', 'Less Admin.']
 
-const CTA_LABEL = 'Find Your Opportunity'
+const CTA_LABEL = 'Tell Us What You Need'
 
 
 const fadeDown: Variants = {
@@ -119,7 +119,7 @@ export default function Hero() {
                 initial="hidden"
                 animate="visible"
                 custom={i + 1}
-                className="-my-1 py-1 text-sm font-semibold uppercase tracking-widest text-black transition-opacity duration-300 hover:opacity-60"
+                className="-my-1 py-1 text-xs font-semibold uppercase tracking-widest text-black transition-opacity duration-300 hover:opacity-60"
               >
                 {link.label}
               </motion.a>
@@ -147,51 +147,18 @@ export default function Hero() {
         <div className="flex-1" />
 
         {/* Bottom */}
-        <div className="flex flex-col gap-5 px-5 pb-8 sm:gap-6 sm:px-8 md:gap-10 md:px-12 md:pb-12">
-          {/* CTA — above the headline on desktop, after it on mobile */}
-          <motion.a
-            href="#contact"
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            className="order-3 -my-1 flex items-center gap-1 whitespace-nowrap py-1 text-base uppercase tracking-wide sm:text-xl md:order-none md:self-end md:text-2xl"
-            style={{ color: ACCENT, fontWeight: 600 }}
-          >
-            {CTA_LABEL}
-            <ArrowUpRight className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" />
-          </motion.a>
-
-          {/* Row B — caption + heading */}
-          <div className="order-2 flex flex-col items-start gap-4 md:order-none md:flex-row md:items-end md:justify-between md:gap-4">
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={4}
-              className="order-2 w-full min-w-0 md:order-none md:w-[150px] lg:w-[220px] xl:w-[260px]"
-            >
-              <p className="text-left text-[9px] font-semibold uppercase leading-snug tracking-widest text-black sm:text-xs md:text-right md:text-sm">
-                {/* broken explicitly, so the line never runs across the orb */}
-                AI &amp; Automation
-                <br />
-                For Business
-              </p>
-            </motion.div>
-
-            <h1 className="order-1 w-full shrink-0 text-right md:order-none md:w-auto">
+        <div className="flex flex-col gap-5 px-5 pb-8 sm:gap-6 sm:px-8 md:gap-8 md:px-12 md:pb-12">
+          {/* Source order follows mobile reading order; desktop places copy on the left. */}
+          <div className="flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between md:gap-4">
+            <h1 className="w-full shrink-0 text-left md:w-auto md:text-right">
               {HEADING_WORDS.map((word, i) => (
                 <span key={word} className="block overflow-hidden">
                   <motion.span
                     initial={{ y: '110%' }}
                     animate={{ y: 0 }}
                     transition={{ delay: 0.4 + i * 0.14, duration: 0.7, ease: EASE }}
-                    className="block uppercase text-black"
+                    className="block text-[clamp(1.125rem,5.2vw,2rem)] uppercase text-black md:text-[clamp(0.95625rem,4.08vw,4.8875rem)]"
                     style={{
-                      /* The longest line is now 17 characters (was 15), so
-                        the slope is pulled back ~12% to hold the same measure —
-                        at 320px the old one overran the 280px column. */
-                      fontSize: 'clamp(1.5rem, 6px + 5.2vw, 7rem)',
                       lineHeight: 0.88,
                       fontWeight: 600,
                     }}
@@ -203,20 +170,47 @@ export default function Hero() {
                 </span>
               ))}
             </h1>
+
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={6}
+              className="w-full min-w-0 md:order-first md:w-[200px] lg:w-[240px] xl:w-[270px]"
+            >
+              <p className="max-w-[34ch] text-left text-xs font-medium leading-relaxed text-black/70 md:text-sm">
+                Relay helps small businesses get more customers and save time
+                through practical marketing, automation and AI.
+              </p>
+            </motion.div>
           </div>
+
+          {/* CTA — above the headline on desktop, after it on mobile */}
+          <motion.a
+            href="#contact"
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={7}
+            className="-my-1 flex items-center gap-1.5 whitespace-nowrap py-1 text-[13px] uppercase tracking-wide sm:text-[15px] md:order-first md:self-end md:text-lg"
+            style={{ color: ACCENT, fontWeight: 600 }}
+          >
+            {CTA_LABEL}
+            <ArrowUpRight className="size-[14px] shrink-0 sm:size-4 md:size-[18px]" />
+          </motion.a>
 
           {/* Row C — proof points */}
           <motion.ul
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            custom={6}
-            className="order-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-black/20 pt-5 sm:gap-x-10 md:order-none md:pt-6"
+            custom={8}
+            className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-black/20 pt-5 sm:gap-x-10 md:pt-6"
           >
             {PROOF_POINTS.map((point) => (
               <li
                 key={point}
-                className="text-[10px] font-semibold uppercase tracking-widest text-black sm:text-xs md:text-sm"
+                className="text-[10px] font-semibold uppercase tracking-widest text-black/70 sm:text-[11px] md:text-xs"
               >
                 {point}
               </li>

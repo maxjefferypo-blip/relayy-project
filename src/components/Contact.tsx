@@ -18,7 +18,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
 const DETAILS = [
   { label: 'Email', value: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
   { label: 'Based', value: 'United Kingdom' },
-  { label: 'Opportunity Session', value: '30 minutes · No obligation' },
+  { label: 'Initial Chat', value: '30 minutes · No obligation' },
 ]
 
 const FIELDS = [
@@ -120,13 +120,14 @@ export default function Contact() {
               />
 
               <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                You don’t need to know what AI you need, and you don’t need a technical brief.
-                Tell us about your business, what’s taking too much time, where customers are
-                being lost, or something you think should simply work better.
+                Need more leads, help with your CRM, better follow-up or ongoing marketing
+                support? Tell us what you want to improve. One specific problem
+                is enough to get started.
               </p>
 
               <p className="mt-4 max-w-md text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                We’ll find the opportunity, then build it.
+                We’ll work out the next step together, with a clear scope and cost
+                based on what your business needs.
               </p>
 
               <dl className="mt-10 flex flex-col gap-6 sm:mt-12">
@@ -196,7 +197,7 @@ export default function Contact() {
                     name="problem"
                     required
                     rows={4}
-                    placeholder="Tell us about the problem, process or idea you have in mind..."
+                    placeholder="For example: we need more enquiries, our CRM is a mess, or follow-up takes too much time..."
                     value={values.problem}
                     onChange={(e) => setValues((v) => ({ ...v, problem: e.target.value }))}
                     className={`${inputClass} resize-none`}

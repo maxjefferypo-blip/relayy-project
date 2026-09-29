@@ -2,26 +2,22 @@ import { useEffect, useRef } from 'react'
 import { ORB_VIDEO } from '@/lib/media'
 import { Body, ClipHeading, Eyebrow, Reveal, Section } from './primitives'
 
-/**
- * The thesis section. It sits between the capability grid and the examples so
- * that "what we automate" is immediately followed by "how we decide what to
- * automate" — which is the part a generic AI agency can't say.
- */
+/** Start with the business problem, then choose the support that fits. */
 const PRINCIPLES = [
   {
-    lead: 'Automation',
-    rest: 'where rules work.',
-    body: 'If something happens the same way every time, it probably shouldn’t need someone doing it manually. We automate the repetitive work that costs your team time.',
+    lead: 'Start',
+    rest: 'with one problem.',
+    body: 'More leads, a CRM that works, better follow-up or less admin. Tell us what’s getting in the way. You don’t need to know the solution before we talk.',
   },
   {
-    lead: 'AI',
-    rest: 'where intelligence helps.',
-    body: 'When the work needs to understand, respond, personalise or make sense of information, AI can take automation further. We use it where it genuinely adds value.',
+    lead: 'Build',
+    rest: 'what helps.',
+    body: 'We agree what needs to improve, then put the right marketing and systems in place. Automation and AI are part of the toolkit, used where they make a practical difference.',
   },
   {
-    lead: 'People',
-    rest: 'where judgement matters.',
-    body: 'Some things are better handled by people. We automate the work around your team, so they have more time for the conversations, decisions and relationships that matter.',
+    lead: 'Support',
+    rest: 'that fits.',
+    body: 'Come to us for a focused project or ongoing marketing support. We shape the work around your priorities and agree the scope and cost before getting started.',
   },
 ]
 
@@ -87,10 +83,10 @@ export default function Approach() {
       {/* The heading takes a full-width row: sharing one with the orb squeezed
         it until it wrapped inside its own clip wrapper. */}
       <div className="relative z-10">
-        <Eyebrow>How We Think</Eyebrow>
+        <Eyebrow>Our Approach</Eyebrow>
 
         <ClipHeading
-          lines={['Not everything', 'needs AI.']}
+          lines={['Built around', 'your business.']}
           className="mt-6 md:mt-8"
           size="clamp(1.5rem, 5vw, 4.5rem)"
         />
@@ -100,9 +96,9 @@ export default function Approach() {
         <div className="relative z-10 md:max-w-xl">
           <Reveal index={1}>
             <Body className="max-w-md">
-              Sometimes a simple automation is enough. Sometimes AI can
-              understand, respond or decide in ways automation can’t. Knowing
-              which one you need is our job.
+              You don’t need a huge marketing stack or a complicated AI
+              transformation. We look at where you’re losing time, leads or
+              customers, then build what will actually help.
             </Body>
           </Reveal>
         </div>
@@ -120,7 +116,7 @@ export default function Approach() {
           of dead space below. */}
         <Reveal
           index={2}
-          className="pointer-events-none absolute -right-24 -top-2 z-0 w-[17rem] sm:-right-16 sm:w-[21rem] md:static md:-mt-24 md:w-auto md:shrink-0 lg:-mt-32 xl:-mt-40"
+          className="pointer-events-none absolute -right-24 top-12 z-0 w-[17rem] sm:-right-16 sm:top-20 sm:w-[21rem] md:static md:-mt-24 md:w-auto md:shrink-0 lg:-mt-32 xl:-mt-40"
         >
           <Orb />
         </Reveal>
