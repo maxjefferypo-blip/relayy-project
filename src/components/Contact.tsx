@@ -1,17 +1,18 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { ClipHeading, Eyebrow, Reveal, Section } from './primitives'
 
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
 
 /**
- * Form endpoint — set `VITE_FORM_ENDPOINT` in `.env` (see `.env.example`).
- * A form-to-email service such as Formspree is enough; the destination address
- * lives in that service's dashboard, so it never ships in the bundle where it
- * would be scraped. With nothing configured the form falls back to composing a
- * `mailto:`, so an enquiry is never silently dropped.
+ * Form endpoint — a Formspree form, which emails each enquiry on to the inbox
+ * set in that form's dashboard, so the destination address never ships in the
+ * bundle where it would be scraped. The endpoint itself is public (it ends up in
+ * the bundle either way), so it is committed here rather than left to a host
+ * setting a deploy can miss. `VITE_FORM_ENDPOINT` overrides it, e.g. for testing.
  */
-const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT as string | undefined
+const ENDPOINT =
+  (import.meta.env.VITE_FORM_ENDPOINT as string | undefined) || 'https://formspree.io/f/mqpkvjlq'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
@@ -53,23 +54,16 @@ export default function Contact() {
   /** Bait field: hidden from people, filled by bots. */
   const [trap, setTrap] = useState('')
   const [status, setStatus] = useState<Status>('idle')
+  const sentRef = useRef<HTMLDivElement>(null)
+
+  // The thank-you panel is shorter than the form it replaces, so on a phone it
+  // can land above the viewport. Focusing it scrolls it back into view and
+  // has screen readers announce it.
+  useEffect(() => {
+    if (status === 'sent') sentRef.current?.focus()
+  }, [status])
 
   const subject = `Relay enquiry — ${values.business || values.name}`
-
-  function mailtoFallback() {
-    const body = [
-      `Name: ${values.name}`,
-      `Business: ${values.business}`,
-      `Email: ${values.email}`,
-      `Website: ${values.website || '—'}`,
-      '',
-      'What could work better?',
-      values.problem,
-    ].join('\n')
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`
-  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -77,11 +71,6 @@ export default function Contact() {
     // Pretend to succeed for bots rather than telling them they were caught.
     if (trap) {
       setStatus('sent')
-      return
-    }
-
-    if (!ENDPOINT) {
-      mailtoFallback()
       return
     }
 
@@ -154,7 +143,12 @@ export default function Contact() {
             {/* Right — the form */}
             <div className="p-6 sm:p-10 lg:p-14">
               {status === 'sent' ? (
-                <div className="flex h-full min-h-[18rem] flex-col justify-center">
+                <div
+                  ref={sentRef}
+                  tabIndex={-1}
+                  role="status"
+                  className="flex h-full min-h-[18rem] flex-col justify-center outline-none"
+                >
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-accent">
                     Enquiry sent
                   </p>
@@ -167,7 +161,14 @@ export default function Contact() {
                   </p>
                 </div>
               ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              // action/method only matter before hydration: a submit then posts
+              // straight to Formspree instead of reloading this page and losing it.
+              <form
+                action={ENDPOINT}
+                method="POST"
+                onSubmit={handleSubmit}
+                className="flex flex-col gap-6"
+              >
                 {FIELDS.map((field) => (
                   <div key={field.name}>
                     <label htmlFor={field.name} className={labelClass}>

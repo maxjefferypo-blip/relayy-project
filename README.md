@@ -21,14 +21,14 @@ npm run preview  # serve the production build
 1. **The orb video is self-hosted** in `src/assets/` (see *The orb video*). The
    original master is still on a third-party CDN, with its URL kept in
    `src/lib/media.ts`. Save a copy somewhere you control before that link dies.
-2. **The enquiry form posts to `VITE_FORM_ENDPOINT`** — see `.env.example`.
-   Set it to a form-to-email endpoint (Formspree's free tier needs no backend)
-   and put the destination address in that service's dashboard, not in the code,
-   so it never ships in the bundle to be scraped. With the variable unset the
-   form falls back to composing a `mailto:`, which works but loses most
-   enquiries — so set it before launch, and remember `.env` is git-ignored, so
-   the host needs the variable configured too. A hidden honeypot field blocks
-   basic bots; anything heavier needs the service's own spam filtering.
+2. **The enquiry form posts to Formspree** (`https://formspree.io/f/mqpkvjlq`,
+   committed in `Contact.tsx`), which emails each enquiry on to the inbox set
+   in that form's dashboard (Form → Settings → Target email). The destination
+   address lives there, not in the code, so it never ships in the bundle to be
+   scraped — to change where enquiries land, change it in Formspree, not here.
+   `VITE_FORM_ENDPOINT` overrides the endpoint (see `.env.example`). A hidden
+   honeypot field blocks basic bots; anything heavier needs Formspree's own
+   spam filtering.
 3. **Confirm the domain.** Every absolute URL currently says
    `https://relayy.co.uk`. Update all five places — `index.html` (canonical,
    `og:url`, `og:image`, `twitter:image`, JSON-LD `url`/`logo`/`image`),
@@ -69,9 +69,9 @@ There is deliberately **no SPA catch-all redirect**. This is one page with
 in-page hash nav, and a catch-all to `index.html` would stop `public/404.html`
 ever being served.
 
-**Set `VITE_FORM_ENDPOINT` in Netlify** (Site configuration → Environment
-variables) before launch. It is baked in at build time, so changing it needs a
-redeploy, not just a save. Without it the form falls back to `mailto:`.
+The form endpoint is committed, so Netlify needs **no environment variables**.
+`VITE_FORM_ENDPOINT` can still override it there, but it is baked in at build
+time, so changing it needs a redeploy, not just a save.
 
 ### Custom domain (relayy.co.uk, registered at GoDaddy)
 
