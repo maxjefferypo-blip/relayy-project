@@ -1,12 +1,11 @@
-import { useState } from 'react'
-import { ClipHeading, Eyebrow, Flow, Reveal, Section } from './primitives'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { Body, ClipHeading, Eyebrow, Flow, Reveal, Section } from './primitives'
 
 type Example = {
   title: string
   body: string
   flow: string[]
-  /** Bento span. Two wide cells, then three narrow — 3+3 over 2+2+2. */
-  span: string
   /**
    * Client identity — the card's only mark.
    *
@@ -21,32 +20,21 @@ type Example = {
   client: { name: string; initials: string; logo?: string }
 }
 
-const EXAMPLES: Example[] = [
+const SYSTEMS: Example[] = [
   {
     title: 'Wellness CRM',
     client: { name: 'Northside Spas', initials: 'NS', logo: '/clients/northside-spas.png' },
     body: 'Turned booking data into repeat customers with one CRM that knows who’s new, who’s returning and who’s disappearing, with follow-up and rebooking handled automatically. More repeat visits. Less CRM admin.',
     flow: ['Booking', 'History', 'Follow-Up', 'Rebook'],
-    span: 'sm:col-span-2 lg:col-span-3',
-  },
-  {
-    title: 'Football Hospitality',
-    // The artwork is The FA's England Football mark; `name` is also the alt
-    // text, so keep it in step with whatever the logo actually shows.
-    client: { name: 'Matchday Club', initials: 'MC', logo: '/clients/matchday.png' },
-    body: 'Turned enquiries into booked hospitality without the two-day wait, connecting availability, quotes and customer communication end to end. More enquiries converted. Less chasing.',
-    flow: ['Enquiry', 'Availability', 'Quote', 'Confirm'],
-    span: 'sm:col-span-2 lg:col-span-3',
   },
   {
     title: 'Padel Bookings',
     client: { name: 'Baseline', initials: 'BP', logo: '/clients/baseline.png' },
     body: 'Made the customer journey run itself: confirmations, cancellations, enquiries, follow-ups and re-engagement all handled automatically. More bookings. Better utilisation. Less admin.',
     flow: ['Book', 'Confirm', 'Refill', 'Rebook'],
-    span: 'lg:col-span-2',
   },
   /*
-   * These two deliberately sit outside the booking-and-CRM pattern of the three
+   * These two deliberately sit outside the booking-and-CRM pattern of the two
    * above: one is language work (drafting in a brand voice, with a human
    * approving), the other is reporting. Both are things AI is genuinely good at
    * rather than aspirational.
@@ -56,16 +44,73 @@ const EXAMPLES: Example[] = [
     client: { name: 'The Granary', initials: 'TG', logo: '/clients/the-granary.png' },
     body: 'Watched for new reviews, drafted a reply in the venue’s own voice for one-click approval, and routed anything negative to a manager instead of answering it automatically. Better reputation. Minutes, not hours.',
     flow: ['Review', 'Draft', 'Approve', 'Post'],
-    span: 'lg:col-span-2',
   },
   {
     title: 'Weekly Reporting',
     client: { name: 'Forge Fitness', initials: 'FF', logo: '/clients/forge-fitness.png' },
     body: 'Pulled numbers from the booking, payment and membership systems into one plain-English summary every Monday, so nobody had to build the report by hand. Clearer numbers. No manual reporting.',
     flow: ['Collect', 'Summarise', 'Send'],
-    span: 'sm:col-span-2 lg:col-span-2',
   },
 ]
+
+type Campaign = { src: string; alt: string; title: string; client: string; width: number; height: number }
+
+/**
+ * Campaign creative, served from `public/work/` (originals in
+ * `assets-src/work/`). Shown at 4:5, the feed-ad ratio, so a source at another
+ * ratio is cropped to its centre.
+ */
+const CAMPAIGNS: Campaign[] = [
+  {
+    src: '/work/sle-transit.jpg',
+    alt: 'Subway-car poster for SLÉ reading “A brighter future starts with the way we move”, over a motion-blurred cyclist.',
+    title: 'Transit Poster',
+    client: 'SLÉ',
+    width: 900,
+    height: 1107,
+  },
+  {
+    src: '/work/issue-08.jpg',
+    alt: 'Street poster headlined “Can AI see patients as people?”, with a patient’s vitals overlaid on his portrait.',
+    title: 'Editorial Poster',
+    client: 'Issue 08',
+    width: 736,
+    height: 920,
+  },
+  {
+    src: '/work/olenphogy.jpg',
+    alt: 'Social ad for Olenphogy Magnesium-8 Pro: a hand holding the bottle above a five-star review, “I woke up feeling actually rested.”',
+    title: 'Social Ad',
+    client: 'Olenphogy',
+    width: 900,
+    height: 1125,
+  },
+]
+
+type Slide =
+  | { kind: 'system'; key: string; item: Example }
+  | { kind: 'campaign'; key: string; item: Campaign }
+
+/**
+ * "All" interleaves the two, so the first swipe already shows that the work
+ * spans systems *and* creative — the section's whole point.
+ */
+const ALL_SLIDES: Slide[] = (() => {
+  const out: Slide[] = []
+  for (let i = 0; i < Math.max(SYSTEMS.length, CAMPAIGNS.length); i++) {
+    if (SYSTEMS[i]) out.push({ kind: 'system', key: SYSTEMS[i].title, item: SYSTEMS[i] })
+    if (CAMPAIGNS[i]) out.push({ kind: 'campaign', key: CAMPAIGNS[i].src, item: CAMPAIGNS[i] })
+  }
+  return out
+})()
+
+const FILTERS = [
+  { label: 'All', kind: null },
+  { label: 'Systems', kind: 'system' },
+  { label: 'Campaigns', kind: 'campaign' },
+] as const
+
+type Filter = (typeof FILTERS)[number]['label']
 
 /**
  * A real logo where there is one, the monogram where there isn't.
@@ -105,9 +150,104 @@ function ClientMark({ name, initials, logo }: Example['client']) {
   )
 }
 
-export default function Examples() {
+/**
+ * One slide frame for both kinds of work: a 4:5 panel with a caption row under
+ * it in the Flow chips' type — kind on the left, client on the right — so a
+ * system card and an ad read as the same showcase.
+ *
+ * `aspect-ratio` only sets a minimum here: a system card whose copy runs longer
+ * than 4:5 at a narrow width grows rather than clipping, and the track
+ * stretches every panel to match it (the images crop to fill).
+ */
+function SlideFrame({ slide }: { slide: Slide }) {
+  // The ad carries its own copy, so a campaign's title lives down here rather
+  // than over the artwork.
+  const kind = slide.kind === 'system' ? 'System' : `Campaign · ${slide.item.title}`
+  const client = slide.kind === 'system' ? slide.item.client.name : slide.item.client
+
   return (
-    <Section id="examples" className="bg-[#0A0A0A]">
+    <figure className="group flex w-[82%] shrink-0 snap-start flex-col sm:w-[46%] lg:w-[34%] xl:w-[30%]">
+      {slide.kind === 'system' ? (
+        <div className="flex aspect-[4/5] flex-1 flex-col border border-white/15 bg-[#0A0A0A] px-6 py-8 transition-colors duration-500 group-hover:bg-[#111111] sm:px-7 sm:py-9 md:px-8 md:py-10">
+          <ClientMark {...slide.item.client} />
+
+          <h3 className="mt-6 text-sm font-semibold uppercase tracking-widest text-white sm:text-base">
+            {slide.item.title}
+          </h3>
+
+          <p className="mt-4 text-sm font-medium leading-relaxed text-white/50 sm:text-base">
+            {slide.item.body}
+          </p>
+
+          <div className="mt-auto pt-8">
+            <Flow steps={slide.item.flow} light />
+          </div>
+        </div>
+      ) : (
+        <div className="relative aspect-[4/5] flex-1 overflow-hidden border border-white/15 bg-white/5">
+          <img
+            src={slide.item.src}
+            alt={slide.item.alt}
+            width={slide.item.width}
+            height={slide.item.height}
+            loading="lazy"
+            draggable={false}
+            className="absolute inset-0 size-full select-none object-cover transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transition-none"
+          />
+        </div>
+      )}
+
+      <figcaption className="mt-3 flex items-center justify-between gap-4 text-[9px] font-semibold uppercase tracking-widest sm:text-[10px]">
+        <span className="text-white/80">{kind}</span>
+        <span className="truncate text-white/40">{client}</span>
+      </figcaption>
+    </figure>
+  )
+}
+
+export default function Examples() {
+  const track = useRef<HTMLDivElement>(null)
+  const [filter, setFilter] = useState<Filter>('All')
+  const [atStart, setAtStart] = useState(true)
+  const [atEnd, setAtEnd] = useState(false)
+
+  const kind = FILTERS.find((f) => f.label === filter)?.kind
+  const slides = kind ? ALL_SLIDES.filter((s) => s.kind === kind) : ALL_SLIDES
+
+  // Arrow state follows the track. Re-run on filter change: the track rewinds
+  // and its width changes.
+  useEffect(() => {
+    const el = track.current
+    if (!el) return
+
+    el.scrollLeft = 0
+    const update = () => {
+      // 1px of slack: fractional widths can leave scrollLeft a hair short.
+      setAtStart(el.scrollLeft <= 1)
+      setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 1)
+    }
+    update()
+    el.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      el.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
+  }, [filter])
+
+  const step = (direction: 1 | -1) => {
+    const el = track.current
+    const slide = el?.firstElementChild as HTMLElement | null
+    if (!el || !slide) return
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0
+    el.scrollBy({ left: direction * (slide.offsetWidth + gap), behavior: 'smooth' })
+  }
+
+  const arrow =
+    'flex size-10 items-center justify-center rounded-full border border-white/20 text-white transition-opacity duration-300 hover:border-white/50 disabled:pointer-events-none disabled:opacity-30'
+
+  return (
+    <Section id="examples" className="overflow-hidden bg-[#0A0A0A]">
       <div className="md:max-w-2xl">
         <Eyebrow muted>Make It Real</Eyebrow>
 
@@ -119,31 +259,59 @@ export default function Examples() {
           className="mt-6 md:mt-8"
           light
         />
+
+        <Reveal index={1}>
+          <Body light className="mt-6 max-w-xl md:mt-10">
+            Campaigns that bring customers in. Systems that keep them coming
+            back.
+          </Body>
+        </Reveal>
       </div>
 
-      <Reveal index={1}>
-        {/* Bento on one hairline: cells sit on a 1px background gap rather than
-          each carrying a border, so shared edges stay a single pixel. */}
-        <div className="mt-10 grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:mt-14 sm:grid-cols-2 md:mt-20 lg:grid-cols-6">
-          {EXAMPLES.map(({ title, body, flow, span, client }) => (
-            <div
-              key={title}
-              className={`group flex flex-col bg-[#0A0A0A] px-6 py-8 transition-colors duration-500 hover:bg-[#111111] sm:px-7 sm:py-10 md:px-9 md:py-12 ${span}`}
-            >
-              <ClientMark {...client} />
+      <Reveal index={2}>
+        {/* Controls: filters left, arrows right, on one hairline like the
+          hero's proof strip. */}
+        <div className="mt-10 flex items-center justify-between gap-4 border-t border-white/15 pt-5 sm:mt-14 md:mt-16 md:pt-6">
+          <div role="group" aria-label="Filter work" className="flex flex-wrap gap-x-5 gap-y-2 sm:gap-x-8">
+            {FILTERS.map(({ label }) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => setFilter(label)}
+                aria-pressed={filter === label}
+                className={`-my-1 py-1 text-[10px] font-semibold uppercase tracking-widest transition-colors duration-300 sm:text-[11px] md:text-xs ${
+                  filter === label ? 'text-white' : 'text-white/40 hover:text-white/70'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-              <h3 className="mt-6 text-sm font-semibold uppercase tracking-widest text-white sm:text-base">
-                {title}
-              </h3>
+          {/* Hidden when every slide already fits. */}
+          <div className={`flex shrink-0 gap-2 ${atStart && atEnd ? 'invisible' : ''}`}>
+            <button type="button" onClick={() => step(-1)} disabled={atStart} aria-label="Previous" className={arrow}>
+              <ArrowLeft className="size-4" />
+            </button>
+            <button type="button" onClick={() => step(1)} disabled={atEnd} aria-label="Next" className={arrow}>
+              <ArrowRight className="size-4" />
+            </button>
+          </div>
+        </div>
 
-              <p className="mt-4 max-w-[46ch] text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-                {body}
-              </p>
-
-              <div className="mt-8 md:mt-auto md:pt-10">
-                <Flow steps={flow} light />
-              </div>
-            </div>
+        {/* Native scroll-snap, so swipe, trackpad and keyboard all work without
+          script. Bleeds to the screen edge so the next slide peeks in, which is
+          what tells a phone user the row scrolls; `scroll-px` keeps a snapped
+          slide aligned with the section's padding rather than the screen edge. */}
+        <div
+          ref={track}
+          role="region"
+          aria-label="Our work"
+          tabIndex={0}
+          className="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 sm:-mx-8 sm:mt-8 sm:scroll-px-8 sm:gap-6 sm:px-8 lg:gap-8 md:-mx-12 md:scroll-px-12 md:px-12"
+        >
+          {slides.map((slide) => (
+            <SlideFrame key={slide.key} slide={slide} />
           ))}
         </div>
       </Reveal>

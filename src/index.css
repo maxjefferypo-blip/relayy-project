@@ -27,6 +27,39 @@ body {
   -webkit-appearance: none;
 }
 
+/* Scrollable rows that swipe or use their own arrows (the Examples carousel). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Stand-in motion for when autoplay is refused (Low Power Mode, Data Saver) and
+   only the poster shows. A slow drift, so the orb does not read as a stuck
+   frame. The class is added by ui/loop-video.tsx and removed if the video does
+   start. Scaled above 1 throughout so a full-bleed poster never shows an edge. */
+@keyframes relay-still-drift {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: scale(1.08) translate3d(-1.5%, 1%, 0) rotate(1.5deg);
+  }
+}
+
+.loop-video-still {
+  animation: relay-still-drift 7s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loop-video-still {
+    animation: none;
+  }
+}
+
 /* Ambient rotation for the capability marks. Duration, direction and a negative
    delay (which sets the starting angle) are supplied per element. */
 @keyframes relay-spin {

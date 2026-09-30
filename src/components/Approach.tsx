@@ -7,7 +7,7 @@ const PRINCIPLES = [
   {
     lead: 'Start',
     rest: 'with one problem.',
-    body: 'More leads, a CRM that works, better follow-up or less admin. Tell us what’s getting in the way. You don’t need to know the solution before we talk.',
+    body: 'More reach, more enquiries, a CRM that works or less admin. Tell us what’s getting in the way. You don’t need to know the solution before we talk.',
   },
   {
     lead: 'Build',
@@ -37,7 +37,7 @@ function Orb() {
        * shown and the orb can never be cropped — it tumbles wider on some
        * frames, and a square crop was cutting it.
        */
-      className="aspect-[3828/2164] w-full max-w-[22rem] object-cover sm:max-w-[26rem] md:max-w-[20rem] lg:max-w-[24rem] xl:max-w-[28rem]"
+      className="aspect-[3828/2164] w-full max-w-[22rem] object-cover sm:max-w-[26rem] md:max-w-[14rem] lg:max-w-[24rem] xl:max-w-[28rem]"
       style={{
         /*
          * The video's ground is #f2f2f0-#f3f3f3 (compression), so no flat
@@ -67,10 +67,9 @@ export default function Approach() {
       <div className="mt-6 md:mt-10 md:flex md:items-start md:justify-between md:gap-10 lg:gap-16">
         <div className="relative z-10 md:max-w-xl">
           <Reveal index={1}>
-            <Body className="max-w-md">
-              You don’t need a huge marketing stack or a complicated AI
-              transformation. We look at where you’re losing time, leads or
-              customers, then build what will actually help.
+            <Body className="max-w-xl">
+              No huge stack or AI overhaul. We find what’s holding you back and
+              fix it.
             </Body>
           </Reveal>
         </div>
@@ -88,7 +87,7 @@ export default function Approach() {
           of dead space below. */}
         <Reveal
           index={2}
-          className="pointer-events-none absolute -right-24 top-12 z-0 w-[17rem] sm:-right-16 sm:top-20 sm:w-[21rem] md:static md:-mt-24 md:w-auto md:shrink-0 lg:-mt-32 xl:-mt-40"
+          className="pointer-events-none absolute -right-20 top-8 z-0 w-[15rem] sm:-right-16 sm:top-20 sm:w-[21rem] md:static md:-mt-24 md:w-auto md:shrink-0 lg:-mt-32 xl:-mt-40"
         >
           <Orb />
         </Reveal>

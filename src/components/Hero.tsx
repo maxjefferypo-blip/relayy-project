@@ -14,7 +14,7 @@ const NAV_LINKS = [
 ]
 
 /** Proof points, not headlines — deliberately smaller than the h1. */
-const PROOF_POINTS = ['More Customers', 'Better Follow-Up', 'Less Admin']
+const PROOF_POINTS = ['More Reach', 'More Customers', 'Less Admin']
 
 const HEADING_WORDS = ['Better Marketing.', 'Smarter Automation.', 'Less Admin.']
 
@@ -174,11 +174,12 @@ export default function Hero() {
               initial="hidden"
               animate="visible"
               custom={6}
-              className="w-full min-w-0 md:order-first md:w-[200px] lg:w-[240px] xl:w-[270px]"
+              className="w-full min-w-0 md:order-first md:w-[260px] lg:w-[300px] xl:w-[340px]"
             >
-              <p className="max-w-[34ch] text-left text-xs font-medium leading-relaxed text-black/70 md:text-sm">
-                Relay helps small businesses turn more leads into customers, with
-                practical marketing, automation and AI.
+              {/* Two lines at every width, like each section's subheader. */}
+              <p className="max-w-[44ch] text-balance text-left text-xs font-normal leading-relaxed text-black/70 lg:text-sm">
+                Campaigns that get you seen. Systems that turn attention into
+                customers.
               </p>
             </m.div>
           </div>

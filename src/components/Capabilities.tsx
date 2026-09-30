@@ -13,7 +13,7 @@ import {
   siZapier,
 } from "simple-icons";
 import { LogoRow, type Logo } from "@/components/ui/logo-cloud";
-import { Body, ClipHeading, Eyebrow, Reveal, Section } from "./primitives";
+import { Body, ClipHeading, CornerMarks, Eyebrow, Reveal, Section } from "./primitives";
 
 const SHAPE = "/shape-9.webp";
 
@@ -36,9 +36,9 @@ type Capability = {
 
 const CAPABILITIES: Capability[] = [
   {
-    title: "Generate more leads",
-    outcome: "Bring more opportunities into your business.",
-    detail: "Campaigns, landing pages, outreach and practical marketing designed to help the right customers find you.",
+    title: "Get seen by the right people",
+    outcome: "Put your business in front of the customers you want.",
+    detail: "Social campaigns, ad creative, landing pages and outreach, planned, made and managed for you.",
     hue: 0,
     rotate: 0,
     spin: 12,
@@ -94,14 +94,17 @@ export default function Capabilities() {
 
         <Reveal index={1}>
           <Body light className="mx-auto mt-8 max-w-xl md:mt-10">
-            Whether you need help generating leads, improving your CRM, automating
-            follow-up or getting your marketing working properly, we build
-            the systems that make it easier.
+            Get seen, win customers, keep them. We run the campaigns and build
+            the systems.
           </Body>
         </Reveal>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:mt-14 md:mt-20 lg:grid-cols-3">
+      {/* Boxed like the Contact panel: hairline frame, crosshair corners. */}
+      <div className="relative mt-10 sm:mt-14 md:mt-20">
+        <CornerMarks light />
+
+        <div className="grid grid-cols-1 gap-px border border-white/15 bg-white/15 lg:grid-cols-3">
           {CAPABILITIES.map(
             ({ title, outcome, detail, hue, rotate, spin, reverse, pulse }, i) => (
               /* Each cell reveals on its own, so the grid builds rather than
@@ -157,6 +160,7 @@ export default function Capabilities() {
               </Reveal>
             ),
           )}
+        </div>
       </div>
 
       <Reveal index={1}>

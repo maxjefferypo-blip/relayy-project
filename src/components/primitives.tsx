@@ -158,7 +158,14 @@ export function ClipHeading({
   )
 }
 
-/** Body copy — sentence case, since these run longer than the hero's fragments. */
+/**
+ * Body copy — sentence case, since these run longer than the hero's fragments.
+ *
+ * Used as the subheader under each section heading, which is held to **two
+ * lines at every width**. At 320px that is about 80 characters, so keep new
+ * copy under it; `text-balance` then splits it into two even lines rather than
+ * a long one and a widow.
+ */
 export function Body({
   children,
   light = false,
@@ -170,7 +177,7 @@ export function Body({
 }) {
   return (
     <p
-      className={`text-sm font-medium leading-relaxed sm:text-base md:text-lg ${
+      className={`text-balance text-sm font-normal leading-relaxed sm:text-base md:text-lg ${
         light ? 'text-white/60' : 'text-black/60'
       } ${className}`}
     >
@@ -237,6 +244,35 @@ export function Flow({ steps, light = false }: { steps: string[]; light?: boolea
         </span>
       ))}
     </div>
+  )
+}
+
+/**
+ * Hairline crosshair for a panel corner. Position it with translate classes so
+ * it centres on the corner, or use `CornerMarks` for all four.
+ */
+export function CornerMark({ className, light = false }: { className: string; light?: boolean }) {
+  const line = light ? 'bg-white/40' : 'bg-black/40'
+  return (
+    <span aria-hidden="true" className={`pointer-events-none absolute block size-3 ${className}`}>
+      <span className={`absolute left-1/2 top-0 h-full w-px -translate-x-1/2 ${line}`} />
+      <span className={`absolute top-1/2 left-0 h-px w-full -translate-y-1/2 ${line}`} />
+    </span>
+  )
+}
+
+/**
+ * A crosshair on each corner of the parent (which needs `relative`): the boxed
+ * panel style shared by Contact and Capabilities.
+ */
+export function CornerMarks({ light = false }: { light?: boolean }) {
+  return (
+    <>
+      <CornerMark light={light} className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
+      <CornerMark light={light} className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
+      <CornerMark light={light} className="left-0 bottom-0 -translate-x-1/2 translate-y-1/2" />
+      <CornerMark light={light} className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
+    </>
   )
 }
 

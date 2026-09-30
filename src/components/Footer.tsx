@@ -48,9 +48,9 @@ export default function Footer() {
             </div>
 
             <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-              Relay helps small businesses turn more leads into customers, with
-              practical marketing, automation and AI. One specific problem or
-              ongoing support, built around your business.
+              Relay helps small businesses get seen, win customers and keep
+              them. Campaigns that bring customers in, systems that keep them
+              coming back, and a team that runs both.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default function Footer() {
           {/* Prerendered at build time, so after New Year the HTML says last
             year until the next deploy; the client corrects it silently. */}
           <p suppressHydrationWarning>© {new Date().getFullYear()} Relay</p>
-          <p>More customers. Better follow-up. Less admin.</p>
+          <p>More reach. More customers. Less admin.</p>
         </div>
       </Reveal>
     </footer>

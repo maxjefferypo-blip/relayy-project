@@ -4,10 +4,13 @@ import { Body, ClipHeading, Eyebrow, Reveal, Section } from './primitives'
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
 
 /**
- * The questions a first call usually starts with. Every answer restates
- * something the page already commits to (existing tools, AI only where it
- * helps, scope and cost agreed up front, the 30-minute chat), so nothing here
- * promises more than the sections above.
+ * The questions a first call usually starts with, answered in the page's own
+ * voice: short sentences, plain words, no hedging.
+ *
+ * Every answer restates something the page already commits to (the kinds of
+ * business in Examples, the tools under Capabilities, AI only where it helps,
+ * scope and cost agreed up front, the 30-minute chat in Contact). Keep it that
+ * way: no prices, timescales or guarantees the rest of the site doesn't make.
  *
  * No FAQPage JSON-LD: Google only shows FAQ rich results for government and
  * health sites now. The answers are plain HTML, which is what search and AI
@@ -15,29 +18,34 @@ const CONTACT_EMAIL = 'hello@relayy.co.uk'
  */
 const FAQS = [
   {
-    question: 'Who do you work with?',
+    question: 'What does Relay actually do?',
     answer:
-      'Small and growing businesses across the UK, especially those that rely on enquiries, bookings or repeat customers, like clinics, spas, gyms, venues and hospitality. If leads are coming in and admin is eating your time, we can usually help.',
+      'We help small businesses get seen, win customers and keep them. That covers social campaigns and ad creative that get attention, the systems that turn it into enquiries and bookings, and running it all month to month. Take the lot, or just the piece you need.',
   },
   {
-    question: 'Do we have to change the software we use?',
+    question: 'Who do you work with?',
     answer:
-      'Usually not. We work with the tools you already have, like WhatsApp, Gmail, HubSpot, Calendly and Stripe, and connect the gaps between them. If something genuinely needs replacing, we’ll explain why before anything is built.',
+      'Small UK businesses that run on enquiries and bookings: spas, gyms, clubs, venues and hospitality. If you want more people finding you, or more of them becoming customers, we’re probably a good fit.',
+  },
+  {
+    question: 'Do we have to change our software?',
+    answer:
+      'Usually not. We build around what you already use, whether that’s WhatsApp, Gmail, HubSpot, Calendly, Stripe or Xero. If something really does need replacing, we’ll tell you why before we build anything.',
   },
   {
     question: 'Do we need to use AI?',
     answer:
-      'Not unless it helps. AI is one part of the toolkit, used where it makes a practical difference, like drafting replies or summarising reports. Often the biggest wins come from faster follow-up and simple automation.',
+      'No. We use it where it earns its place, like drafting review replies or writing up the weekly numbers. More often the quickest wins are faster replies and follow-up that actually happens.',
   },
   {
-    question: 'How much does it cost?',
+    question: 'What does it cost?',
     answer:
-      'It depends on what you need. Some businesses come to us for a focused project, others for ongoing support. Either way, we agree the scope and cost up front, so there are no surprises.',
+      'It depends on the job. Some businesses want one focused project, others want ongoing marketing support. Either way, we agree the scope and cost with you before we start. No surprises.',
   },
   {
-    question: 'How do we get started?',
+    question: 'What happens on the first call?',
     answer:
-      'Tell us about one thing you want to improve, using the form above or by email. We’ll arrange a 30-minute call, with no obligation, to understand how things work today and where the quickest wins are.',
+      'It’s 30 minutes, with no obligation. You tell us how things work today and where they’re going wrong. We’ll tell you what we’d fix first, and whether we’re the right people to do it.',
   },
 ]
 
@@ -47,8 +55,9 @@ const FAQS = [
  * closes the others); older browsers just let several stay open.
  *
  * White, between Contact's #F2F2F2 and the dark footer, so it still reads as
- * its own section. The list is a hairline stack, the same 1px rules as the
- * grids above.
+ * its own section. Solid hairlines top and bottom, faint dotted rules between
+ * questions, so the stack reads as one piece rather than six. No crosshairs
+ * like Contact's panel: they would read as a second set of expand icons.
  */
 export default function FAQ() {
   return (
@@ -60,7 +69,7 @@ export default function FAQ() {
           <ClipHeading lines={['Straight', 'answers.']} className="mt-6 md:mt-8" />
 
           <Reveal index={1}>
-            <Body className="mt-8 max-w-sm md:mt-10">
+            <Body className="mt-6 max-w-sm md:mt-10">
               Anything else? Ask us at{' '}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
@@ -73,19 +82,31 @@ export default function FAQ() {
         </div>
 
         <Reveal index={2} className="mt-10 sm:mt-14 lg:mt-0">
-          <div className="border-t border-black/15">
-            {FAQS.map(({ question, answer }) => (
-              <details key={question} name="faq" className="group border-b border-black/15">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 transition-opacity hover:opacity-60 sm:py-7 [&::-webkit-details-marker]:hidden">
-                  <h3 className="text-sm font-semibold uppercase leading-snug tracking-widest text-black sm:text-base">
+          <div className="border-y border-black/15">
+            {FAQS.map(({ question, answer }, i) => (
+              <details
+                key={question}
+                name="faq"
+                className="group border-t border-dotted border-black/25 first-of-type:border-t-0"
+              >
+                <summary className="flex cursor-pointer list-none items-baseline gap-4 py-6 sm:gap-6 sm:py-7 [&::-webkit-details-marker]:hidden">
+                  {/* Decorative index, in the Flow chips' small caps. */}
+                  <span
+                    aria-hidden="true"
+                    className="w-5 shrink-0 text-[10px] font-semibold tabular-nums tracking-widest text-black/30 sm:text-[11px]"
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="flex-1 text-sm font-semibold uppercase leading-snug tracking-widest text-black transition-opacity duration-300 group-hover:opacity-60 group-open:!opacity-100 sm:text-base">
                     {question}
                   </h3>
                   <Plus
                     aria-hidden="true"
-                    className="size-4 shrink-0 text-black/40 transition-transform duration-300 group-open:rotate-45 motion-reduce:transition-none sm:size-5"
+                    className="size-4 shrink-0 self-center text-black/40 transition-transform duration-300 group-open:rotate-45 group-open:text-black motion-reduce:transition-none sm:size-5"
                   />
                 </summary>
-                <p className="max-w-[60ch] pb-7 text-sm font-medium leading-relaxed text-black/60 sm:text-base">
+                {/* Indented to sit under the question, past the index. */}
+                <p className="max-w-[56ch] pb-7 pl-9 pr-8 text-sm font-medium leading-relaxed text-black/60 sm:pl-11 sm:text-base">
                   {answer}
                 </p>
               </details>

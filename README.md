@@ -110,7 +110,7 @@ The page renders six sections, in this order (`src/App.tsx`):
 | Hero | `Hero.tsx` | Background video, nav, headline, proof strip |
 | Capabilities | `Capabilities.tsx` | Dark 3x2 feature grid + logo marquee |
 | Approach | `Approach.tsx` | "Not everything needs AI." The thesis |
-| Examples | `Examples.tsx` | Five-cell bento of delivered work |
+| Examples | `Examples.tsx` | One filterable carousel of systems work and campaign creative |
 | Contact | `Contact.tsx` | Enquiry form |
 | FAQ | `FAQ.tsx` | Five questions, native `<details>` accordion |
 | Footer | `Footer.tsx` | Logo, positioning line, email, copyright |
@@ -241,8 +241,9 @@ content columns carry `relative z-10` so they stay above it.
 <details>
 <summary><strong>Examples</strong> — invented clients, and the logo alpha ramp</summary>
 
-A five-cell bento (3+3 over 2+2+2 at `lg`, two columns at `sm`, stacked on
-mobile) on one hairline grid. Each cell is a client monogram, title, body and
+One scroll-snap carousel of both kinds of work, filtered All / Systems /
+Campaigns, with "All" interleaving the two. Every slide is a 4:5 panel with a
+caption row (kind left, client right). Each system card is a client mark, title, body and
 `Flow` strip. There is no sector icon — the client mark is the card's only
 identity.
 
@@ -262,9 +263,9 @@ wordmark reading far fainter than a black one. Regenerate the same way if a logo
 is replaced. A card with no `logo`, or whose file fails to load, falls back to a
 monogram — so a missing file degrades tidily rather than showing a broken image.
 
-**Football Hospitality is deliberately still on its monogram:** the artwork
-supplied is The FA's England Football mark, which would assert a client
-relationship with a real organisation.
+Football Hospitality (Matchday Club) was dropped when campaign creative was
+added. Campaign images live in `public/work/` as 900px-wide JPEGs, with
+originals in `assets-src/work/`; add one by adding a row to `CAMPAIGNS`.
 
 The monogram (initials tile + name) stands in for a client logo. **The names are
 invented** — Northside Spa, Matchday Club, Baseline Padel, The Granary, Forge
@@ -275,8 +276,8 @@ agreed to be named; `Logo.src` in `ui/logo-cloud` already takes raster or SVG
 artwork.
 
 The last two cells (Review Replies, Weekly Reporting) deliberately sit outside
-the booking-and-CRM pattern of the first three — one is language work with a
-human approving, the other is reporting — so the five read as a range rather
+the booking-and-CRM pattern of the first two — one is language work with a
+human approving, the other is reporting — so the four read as a range rather
 than one trick. The section's "not client case studies" disclaimer was removed
 deliberately when the copy went past tense; keep it that way only while these
 are real engagements.
@@ -368,10 +369,21 @@ covers the video. Three fixes, and **all three matter**:
 To regenerate from the master, with any ffmpeg (`npx ffmpeg-static` works
 without installing one):
 
+The master is 24fps and its last frame does not match its first, so played
+as-is it judders on a 60Hz screen and jumps every loop. The encodes fix both:
+motion-interpolated up to 48fps, then the last 1.5s crossfaded into the first
+1.5s so the loop has no cut (8.5s long). `LoopVideo` plays it at 0.8x.
+
 ```bash
-ffmpeg -i master.mp4 -vf "scale=1920:-2:flags=lanczos" -c:v libx264 -profile:v high \
-  -preset slower -crf 24 -pix_fmt yuv420p -movflags +faststart -an src/assets/orb-1920.mp4
-# same again with scale=1280:-2 for orb-1280.mp4, then the poster:
+# 1. 48fps intermediate, near-lossless (slow: ~2 min)
+ffmpeg -i master.mp4 -vf "scale=1920:-2:flags=lanczos,minterpolate=fps=48:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1" \
+  -c:v libx264 -preset veryfast -crf 8 -pix_fmt yuv420p -an inter48.mp4
+# 2. seamless loop: body from 1.5s, then its tail crossfaded into the head.
+#    T is inter48's duration (9.979); offset = T - 3.
+FC="[0:v]split[x][y];[x]trim=start=1.5:end=9.979,setpts=PTS-STARTPTS[a];[y]trim=start=0:end=1.5,setpts=PTS-STARTPTS[b];[a][b]xfade=transition=fade:duration=1.5:offset=6.979"
+ffmpeg -i inter48.mp4 -filter_complex "$FC,format=yuv420p[v]" -map "[v]" -c:v libx264 -profile:v high \
+  -preset slower -crf 24 -movflags +faststart -an src/assets/orb-1920.mp4
+# same again with ",scale=1280:-2:flags=lanczos" before format= for orb-1280.mp4, then the poster:
 ffmpeg -i src/assets/orb-1920.mp4 -frames:v 1 -c:v libwebp -quality 80 src/assets/orb-poster.webp
 ```
 

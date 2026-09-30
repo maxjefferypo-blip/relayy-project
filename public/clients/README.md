@@ -6,7 +6,6 @@ Drop each client's artwork here, named to match the `logo` path in
 | Card | File |
 | --- | --- |
 | Wellness CRM | `northside-spas.png` |
-| Football Hospitality | `matchday.png` |
 | Padel Bookings | `baseline.png` |
 | Review Replies | `the-granary.png` |
 | Weekly Reporting | `forge-fitness.png` |

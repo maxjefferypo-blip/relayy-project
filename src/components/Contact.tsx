@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { ClipHeading, Eyebrow, Reveal, Section } from './primitives'
+import { ClipHeading, CornerMarks, Eyebrow, Reveal, Section } from './primitives'
 
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
 
@@ -32,16 +32,6 @@ const FIELDS = [
 const labelClass = 'block text-[10px] font-semibold uppercase tracking-widest text-black/50'
 const inputClass =
   'mt-2.5 w-full border border-black/15 bg-white px-4 py-3 text-sm font-medium text-black outline-none transition-colors placeholder:text-black/30 focus:border-black/50 sm:text-base'
-
-/** Hairline crosshair, one per panel corner. */
-function CornerMark({ className }: { className: string }) {
-  return (
-    <span aria-hidden="true" className={`pointer-events-none absolute block size-3 ${className}`}>
-      <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-black/40" />
-      <span className="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-black/40" />
-    </span>
-  )
-}
 
 export default function Contact() {
   const [values, setValues] = useState({
@@ -92,10 +82,7 @@ export default function Contact() {
     <Section id="contact" className="bg-[#F2F2F2]">
       <Reveal>
         <div className="relative border border-black/15">
-          <CornerMark className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
-          <CornerMark className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
-          <CornerMark className="left-0 bottom-0 -translate-x-1/2 translate-y-1/2" />
-          <CornerMark className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
+          <CornerMarks />
 
           <div className="grid lg:grid-cols-2">
             {/* Left — the pitch */}
@@ -108,15 +95,8 @@ export default function Contact() {
                 size="clamp(1.125rem, 2.6vw, 2.5rem)"
               />
 
-              <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                Need more leads, help with your CRM, better follow-up or ongoing marketing
-                support? Tell us what you want to improve. One specific problem
-                is enough to get started.
-              </p>
-
-              <p className="mt-4 max-w-md text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                We’ll work out the next step together, with a clear scope and cost
-                based on what your business needs.
+              <p className="mt-6 max-w-md text-balance text-sm font-normal leading-relaxed text-black/60 sm:text-base">
+                Tell us what to improve. One problem is enough to start.
               </p>
 
               <dl className="mt-10 flex flex-col gap-6 sm:mt-12">
@@ -198,7 +178,7 @@ export default function Contact() {
                     name="problem"
                     required
                     rows={4}
-                    placeholder="For example: we need more enquiries, leads go cold before we reply, or our CRM is a mess..."
+                    placeholder="For example: not enough people know we exist, enquiries go cold before we reply, or our CRM is a mess..."
                     value={values.problem}
                     onChange={(e) => setValues((v) => ({ ...v, problem: e.target.value }))}
                     className={`${inputClass} resize-none`}
