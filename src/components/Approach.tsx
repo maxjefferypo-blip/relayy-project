@@ -2,22 +2,22 @@ import { ORB_POSTER, ORB_VIDEO_SMALL } from '@/lib/media'
 import { LoopVideo } from '@/components/ui/loop-video'
 import { Body, ClipHeading, Eyebrow, Reveal, Section } from './primitives'
 
-/** Start with the business problem, then choose the support that fits. */
+/** Diagnosis first, then delivery, then measurement — one person throughout. */
 const PRINCIPLES = [
   {
-    lead: 'Start',
-    rest: 'with one problem.',
-    body: 'More reach, more enquiries, a CRM that works or less admin. Tell us what’s getting in the way. You don’t need to know the solution before we talk.',
+    lead: 'Diagnose',
+    rest: 'the real problem.',
+    body: '“Plenty of people visit our website, but hardly anyone books.” Tell us what’s getting in the way. You don’t need to know the solution. Working out where it goes wrong is our job.',
   },
   {
     lead: 'Build',
-    rest: 'what helps.',
-    body: 'We agree what needs to improve, then put the right marketing and systems in place. Automation and AI are part of the toolkit, used where they make a practical difference.',
+    rest: 'the fix.',
+    body: 'We choose what the problem actually needs and deliver it, whether that’s a website, a campaign, a customer journey or an automation. Creative, marketing and AI are tools, not the pitch.',
   },
   {
-    lead: 'Support',
-    rest: 'that fits.',
-    body: 'Come to us for a focused project or ongoing marketing support. We shape the work around your priorities and agree the scope and cost before getting started.',
+    lead: 'Improve',
+    rest: 'what’s working.',
+    body: 'Every piece of work has a defined scope and a measurable goal, agreed before we start. We track the number that matters and keep improving it.',
   },
 ]
 
@@ -61,15 +61,15 @@ export default function Approach() {
       <div className="relative z-10">
         <Eyebrow>Our Approach</Eyebrow>
 
-        <ClipHeading lines={['Built around', 'your business.']} className="mt-6 md:mt-8" />
+        <ClipHeading lines={['Diagnose first.', 'Then deliver.']} className="mt-6 md:mt-8" />
       </div>
 
       <div className="mt-6 md:mt-10 md:flex md:items-start md:justify-between md:gap-10 lg:gap-16">
         <div className="relative z-10 md:max-w-xl">
           <Reveal index={1}>
             <Body className="max-w-xl">
-              No huge stack or AI overhaul. We find what’s holding you back and
-              fix it.
+              No big agency team, no unnecessary complexity. You work directly
+              with the person who finds the problem and fixes it.
             </Body>
           </Reveal>
         </div>

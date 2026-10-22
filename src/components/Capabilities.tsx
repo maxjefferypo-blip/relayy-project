@@ -36,32 +36,61 @@ type Capability = {
 
 const CAPABILITIES: Capability[] = [
   {
-    title: "Get seen by the right people",
-    outcome: "Put your business in front of the customers you want.",
-    detail: "Social campaigns, ad creative, landing pages and outreach, planned, made and managed for you.",
+    title: "Get seen",
+    outcome: "More of the right people finding you.",
+    detail: "Brand visibility, social campaigns, ads and content.",
     hue: 0,
     rotate: 0,
     spin: 12,
     pulse: 3.1,
   },
   {
-    title: "Convert more customers",
-    outcome: "Turn more enquiries into customers with faster replies and better follow-up.",
-    detail: "Instant lead response, CRM setup, follow-up and booking journeys, so fewer enquiries go cold.",
-    hue: 125,
+    title: "Win more customers",
+    outcome: "More leads, enquiries, bookings and sales.",
+    detail: "Websites, landing pages, lead magnets and booking journeys.",
+    hue: 60,
     rotate: 143,
     spin: 10,
     pulse: 2.7,
   },
   {
-    title: "Automate the repetitive stuff",
-    outcome: "Spend less time on admin and more time on your business.",
-    detail: "Marketing automation, customer reminders, review requests, reactivation campaigns and AI-powered workflows.",
-    hue: 250,
+    title: "Keep more customers",
+    outcome: "More repeat business, for longer.",
+    detail: "Customer journeys, lifecycle emails, loyalty and reactivation.",
+    hue: 120,
+    rotate: 72,
+    spin: 11,
+    reverse: true,
+    pulse: 3.4,
+  },
+  {
+    title: "Make more from what you've got",
+    outcome: "More revenue per customer, less wasted spend.",
+    detail: "Funnels, offers, pricing tests and upselling.",
+    hue: 180,
     rotate: 219,
     spin: 13,
     reverse: true,
     pulse: 3.8,
+  },
+  {
+    title: "Get time back",
+    outcome: "Less admin, faster execution.",
+    detail: "AI workflows, CRM automation, templates and process fixes.",
+    hue: 240,
+    rotate: 301,
+    spin: 12,
+    pulse: 2.9,
+  },
+  {
+    title: "Know what's working",
+    outcome: "Clear numbers and better decisions.",
+    detail: "Reporting, tracking and regular growth reviews.",
+    hue: 300,
+    rotate: 36,
+    spin: 10,
+    reverse: true,
+    pulse: 3.3,
   },
 ];
 
@@ -88,14 +117,14 @@ export default function Capabilities() {
   return (
     <Section id="capabilities" className="bg-[#0A0A0A]">
       <div className="text-center">
-        <Eyebrow muted>What We Help With</Eyebrow>
+        <Eyebrow muted>What We Solve</Eyebrow>
 
-        <ClipHeading lines={["More customers.", "Less work."]} className="mt-6 md:mt-8" light />
+        <ClipHeading lines={["Your problem.", "Our job."]} className="mt-6 md:mt-8" light />
 
         <Reveal index={1}>
           <Body light className="mx-auto mt-8 max-w-xl md:mt-10">
-            Get seen, win customers, keep them. We run the campaigns and build
-            the systems.
+            You know what’s holding you back. We work out the right fix and
+            make it happen.
           </Body>
         </Reveal>
       </div>
@@ -104,7 +133,7 @@ export default function Capabilities() {
       <div className="relative mt-10 sm:mt-14 md:mt-20">
         <CornerMarks light />
 
-        <div className="grid grid-cols-1 gap-px border border-white/15 bg-white/15 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-3">
           {CAPABILITIES.map(
             ({ title, outcome, detail, hue, rotate, spin, reverse, pulse }, i) => (
               /* Each cell reveals on its own, so the grid builds rather than
@@ -112,7 +141,7 @@ export default function Capabilities() {
               <Reveal
                 key={title}
                 index={i}
-                className="group cursor-pointer bg-[#0A0A0A] px-6 py-8 transition-colors duration-500 hover:bg-[#111111] sm:px-7 sm:py-10 md:px-9 md:py-12"
+                className="group cursor-pointer bg-[#0A0A0A] px-6 py-8 transition-colors duration-500 hover:bg-[#111111] sm:px-7 sm:py-9 md:px-8 md:py-10"
               >
                 <div className="flex items-center gap-3">
                   {/* rotation on the wrapper, scale on the image, so the spin

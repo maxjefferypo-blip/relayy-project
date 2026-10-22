@@ -20,12 +20,17 @@ const FAQS = [
   {
     question: 'What does Relay actually do?',
     answer:
-      'We help small businesses get seen, win customers and keep them. That covers social campaigns and ad creative that get attention, the systems that turn it into enquiries and bookings, and running it all month to month. Take the lot, or just the piece you need.',
+      'We’re an on-demand growth partner. We help growing businesses win more customers, keep them for longer, make more from what they’ve got and get time back. You bring the problem; we work out the right fix and deliver it, whether that’s a website, a campaign, a customer journey or an automation.',
   },
   {
     question: 'Who do you work with?',
     answer:
-      'Small UK businesses that run on enquiries and bookings: spas, gyms, clubs, venues and hospitality. If you want more people finding you, or more of them becoming customers, we’re probably a good fit.',
+      'Businesses with an established product or service and existing customers, who know there’s room to grow but don’t have the time or specialist capacity to chase it. Your situation matters more than your sector: clinics, retailers, hotels, venues and B2B companies all fit.',
+  },
+  {
+    question: 'Who will we actually work with?',
+    answer:
+      'Relay is founder-led. You work directly with the person diagnosing the problem and delivering the fix, not an account manager passing notes along. For highly specialised work we bring in trusted collaborators, and we’ll tell you when we do.',
   },
   {
     question: 'Do we have to change our software?',
@@ -40,12 +45,12 @@ const FAQS = [
   {
     question: 'What does it cost?',
     answer:
-      'It depends on the job. Some businesses want one focused project, others want ongoing marketing support. Either way, we agree the scope and cost with you before we start. No surprises.',
+      'There are three ways to work with us. A Growth Review is a fixed-fee look at what’s holding you back. A Growth Sprint solves one specific problem at a fixed scope and price. A Growth Partner retainer gives you ongoing expertise and execution with agreed monthly capacity. Either way, scope and cost are agreed before we start.',
   },
   {
     question: 'What happens on the first call?',
     answer:
-      'It’s 30 minutes, with no obligation. You tell us how things work today and where they’re going wrong. We’ll tell you what we’d fix first, and whether we’re the right people to do it.',
+      'It’s 30 minutes, with no obligation. You tell us what’s getting in the way. We’ll tell you where we’d look first, and whether we’re the right people to do it.',
   },
 ]
 

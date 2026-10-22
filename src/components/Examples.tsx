@@ -62,12 +62,12 @@ type Campaign = { src: string; alt: string; title: string; client: string; width
  */
 const CAMPAIGNS: Campaign[] = [
   {
-    src: '/work/sle-transit.jpg',
-    alt: 'Subway-car poster for SLÉ reading “A brighter future starts with the way we move”, over a motion-blurred cyclist.',
-    title: 'Transit Poster',
-    client: 'SLÉ',
+    src: '/work/olenphogy.jpg',
+    alt: 'Social ad for Olenphogy Magnesium-8 Pro: a hand holding the bottle above a five-star review, “I woke up feeling actually rested.”',
+    title: 'Social Ad',
+    client: 'Olenphogy',
     width: 900,
-    height: 1107,
+    height: 1125,
   },
   {
     src: '/work/issue-08.jpg',
@@ -78,12 +78,12 @@ const CAMPAIGNS: Campaign[] = [
     height: 920,
   },
   {
-    src: '/work/olenphogy.jpg',
-    alt: 'Social ad for Olenphogy Magnesium-8 Pro: a hand holding the bottle above a five-star review, “I woke up feeling actually rested.”',
-    title: 'Social Ad',
-    client: 'Olenphogy',
+    src: '/work/sle-transit.jpg',
+    alt: 'Subway-car poster for SLÉ reading “A brighter future starts with the way we move”, over a motion-blurred cyclist.',
+    title: 'Transit Poster',
+    client: 'SLÉ',
     width: 900,
-    height: 1125,
+    height: 1107,
   },
 ]
 
@@ -262,16 +262,17 @@ export default function Examples() {
 
         <Reveal index={1}>
           <Body light className="mt-6 max-w-xl md:mt-10">
-            Campaigns that bring customers in. Systems that keep them coming
-            back.
+            Real problems, solved. Winning customers, keeping them, and giving
+            teams their time back.
           </Body>
         </Reveal>
       </div>
 
       <Reveal index={2}>
         {/* Controls: filters left, arrows right, on one hairline like the
-          hero's proof strip. */}
-        <div className="mt-10 flex items-center justify-between gap-4 border-t border-white/15 pt-5 sm:mt-14 md:mt-16 md:pt-6">
+          hero's proof strip. `#work` is the hero's "See Our Work" target, so
+          it lands on the cards rather than the section heading. */}
+        <div id="work" className="mt-10 flex scroll-mt-6 items-center justify-between gap-4 border-t border-white/15 pt-5 sm:mt-14 md:mt-16 md:pt-6">
           <div role="group" aria-label="Filter work" className="flex flex-wrap gap-x-5 gap-y-2 sm:gap-x-8">
             {FILTERS.map(({ label }) => (
               <button
@@ -308,7 +309,7 @@ export default function Examples() {
           role="region"
           aria-label="Our work"
           tabIndex={0}
-          className="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 sm:-mx-8 sm:mt-8 sm:scroll-px-8 sm:gap-6 sm:px-8 lg:gap-8 md:-mx-12 md:scroll-px-12 md:px-12"
+          className="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-5 px-5 sm:-mx-8 sm:mt-8 sm:scroll-px-8 sm:px-8 md:gap-8 md:-mx-12 md:scroll-px-12 md:px-12"
         >
           {slides.map((slide) => (
             <SlideFrame key={slide.key} slide={slide} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { m, type Variants } from 'framer-motion'
-import { ArrowUpRight, X } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, X } from 'lucide-react'
 import { ORB_POSTER, ORB_VIDEO } from '@/lib/media'
 import { LoopVideo } from '@/components/ui/loop-video'
 
@@ -8,17 +8,18 @@ const ACCENT = '#5E0ED7'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const NAV_LINKS = [
-  { label: 'What We Do', href: '#capabilities' },
+  { label: 'What We Solve', href: '#capabilities' },
   { label: 'Examples', href: '#examples' },
   { label: 'Contact', href: '#contact' },
 ]
 
 /** Proof points, not headlines — deliberately smaller than the h1. */
-const PROOF_POINTS = ['More Reach', 'More Customers', 'Less Admin']
+const PROOF_POINTS = ['More Customers', 'Better Retention', 'Less Busywork']
 
-const HEADING_WORDS = ['Better Marketing.', 'Smarter Automation.', 'Less Admin.']
+const HEADING_WORDS = ['Your On-Demand', 'Growth Partner.']
 
-const CTA_LABEL = 'Tell Us What You Need'
+const CTA_LABEL = 'Tell Us The Problem'
+const WORK_LABEL = 'See Our Work'
 
 
 const fadeDown: Variants = {
@@ -155,7 +156,7 @@ export default function Hero() {
                     initial={{ y: '110%' }}
                     animate={{ y: 0 }}
                     transition={{ delay: 0.4 + i * 0.14, duration: 0.7, ease: EASE }}
-                    className="block text-[clamp(1.125rem,5.2vw,2rem)] uppercase text-black md:text-[clamp(0.95625rem,4.08vw,4.8875rem)]"
+                    className="block text-[clamp(1.5rem,8vw,2.75rem)] uppercase text-black md:text-[clamp(0.95625rem,5vw,6rem)]"
                     style={{
                       lineHeight: 0.88,
                       fontWeight: 600,
@@ -178,25 +179,37 @@ export default function Hero() {
             >
               {/* Two lines at every width, like each section's subheader. */}
               <p className="max-w-[44ch] text-balance text-left text-xs font-normal leading-relaxed text-black/70 lg:text-sm">
-                Campaigns that get you seen. Systems that turn attention into
-                customers.
+                We find what’s holding your business back, then make it
+                happen.
               </p>
             </m.div>
           </div>
 
-          {/* CTA — above the headline on desktop, after it on mobile */}
-          <m.a
-            href="#contact"
+          {/* CTAs — above the headline on desktop, after it on mobile */}
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
             custom={7}
-            className="-my-1 flex items-center gap-1.5 whitespace-nowrap py-1 text-[13px] uppercase tracking-wide sm:text-[15px] md:order-first md:self-end md:text-lg"
-            style={{ color: ACCENT, fontWeight: 600 }}
+            className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] uppercase tracking-wide sm:gap-x-8 sm:text-[15px] md:order-first md:self-end md:text-lg"
+            style={{ fontWeight: 600 }}
           >
-            {CTA_LABEL}
-            <ArrowUpRight className="size-[14px] shrink-0 sm:size-4 md:size-[18px]" />
-          </m.a>
+            <a
+              href="#contact"
+              className="-my-1 flex items-center gap-1.5 whitespace-nowrap py-1"
+              style={{ color: ACCENT }}
+            >
+              {CTA_LABEL}
+              <ArrowUpRight className="size-[14px] shrink-0 sm:size-4 md:size-[18px]" />
+            </a>
+            <a
+              href="#work"
+              className="-my-1 flex items-center gap-1.5 whitespace-nowrap py-1 text-black transition-opacity duration-300 hover:opacity-60"
+            >
+              {WORK_LABEL}
+              <ArrowDown className="size-[14px] shrink-0 sm:size-4 md:size-[18px]" />
+            </a>
+          </m.div>
 
           {/* Row C — proof points */}
           <m.ul
@@ -204,12 +217,12 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             custom={8}
-            className="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-black/20 pt-5 sm:gap-x-10 md:pt-6"
+            className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-black/20 pt-5 sm:gap-x-10 md:pt-6"
           >
             {PROOF_POINTS.map((point) => (
               <li
                 key={point}
-                className="text-[10px] font-semibold uppercase tracking-widest text-black/70 sm:text-[11px] md:text-xs"
+                className="text-[10px] font-semibold uppercase tracking-wider text-black/70 sm:text-[11px] sm:tracking-widest md:text-xs"
               >
                 {point}
               </li>

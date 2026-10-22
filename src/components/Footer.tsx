@@ -13,7 +13,7 @@ const CONTACT_EMAIL = 'hello@relayy.co.uk'
  * kept short deliberately, but a footer is where a full index belongs.
  */
 const INDEX = [
-  { label: 'What We Do', href: '#capabilities' },
+  { label: 'What We Solve', href: '#capabilities' },
   { label: 'Our Approach', href: '#approach' },
   { label: 'Examples', href: '#examples' },
   { label: 'Contact', href: '#contact' },
@@ -48,9 +48,9 @@ export default function Footer() {
             </div>
 
             <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-              Relay helps small businesses get seen, win customers and keep
-              them. Campaigns that bring customers in, systems that keep them
-              coming back, and a team that runs both.
+              Relay is an on-demand growth partner. We help growing businesses
+              win more customers, keep them for longer and work smarter, from
+              spotting the opportunity to making it happen.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default function Footer() {
           {/* Prerendered at build time, so after New Year the HTML says last
             year until the next deploy; the client corrects it silently. */}
           <p suppressHydrationWarning>© {new Date().getFullYear()} Relay</p>
-          <p>More reach. More customers. Less admin.</p>
+          <p>More customers. Better retention. Less busywork.</p>
         </div>
       </Reveal>
     </footer>

@@ -90,13 +90,13 @@ export default function Contact() {
               <Eyebrow>Where Do We Start?</Eyebrow>
 
               <ClipHeading
-                lines={['What could work', 'better?']}
+                lines={['What’s holding', 'you back?']}
                 className="mt-5 md:mt-6"
                 size="clamp(1.125rem, 2.6vw, 2.5rem)"
               />
 
               <p className="mt-6 max-w-md text-balance text-sm font-normal leading-relaxed text-black/60 sm:text-base">
-                Tell us what to improve. One problem is enough to start.
+                Tell us the problem. You don’t need to know the solution; that’s our job.
               </p>
 
               <dl className="mt-10 flex flex-col gap-6 sm:mt-12">
@@ -170,7 +170,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="problem" className={labelClass}>
-                    What could work better?
+                    What’s holding you back?
                     <span className="text-accent"> *</span>
                   </label>
                   <textarea
@@ -178,7 +178,7 @@ export default function Contact() {
                     name="problem"
                     required
                     rows={4}
-                    placeholder="For example: not enough people know we exist, enquiries go cold before we reply, or our CRM is a mess..."
+                    placeholder="For example: plenty of people visit our website but hardly anyone books, customers buy once and never come back, or admin eats our week..."
                     value={values.problem}
                     onChange={(e) => setValues((v) => ({ ...v, problem: e.target.value }))}
                     className={`${inputClass} resize-none`}

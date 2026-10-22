@@ -1,6 +1,6 @@
 # Relay
 
-Marketing site for Relay — AI and automation consultancy for growing businesses.
+Marketing site for Relay — an on-demand growth partner for growing businesses.
 Single-page React app, prerendered to static HTML at build time: hero,
 capability grid, thesis section, work examples, enquiry form and FAQ.
 
