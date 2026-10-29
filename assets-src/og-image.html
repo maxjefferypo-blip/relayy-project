@@ -1,24 +1,44 @@
 <!doctype html>
-<!-- Source for public/og-image.png (1200x630). Regenerate after a copy change:
+<!-- Source for public/og-image-v2.png (1200x630). Regenerate after a copy change:
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --hide-scrollbars \
     --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=8000 \
-    --screenshot=public/og-image.png "file://$PWD/assets-src/og-image.html"
-  Copy mirrors the hero tagline and the footer strapline. -->
+    --screenshot=public/og-image-v2.png "file://$PWD/assets-src/og-image.html"
+  Mirrors the hero: the orb on the left over its own holographic wash, the h1
+  on the right, the proof strip along the bottom. Bump the filename (v3, ...)
+  on every change: WhatsApp, LinkedIn and Facebook cache previews per image
+  URL, so a new name is what makes them fetch the new one. -->
 <html><head><meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=block" rel="stylesheet">
 <style>
-  html,body{margin:0;width:1200px;height:630px;background:#0A0A0A;overflow:hidden}
-  body{font-family:Inter,sans-serif;font-weight:600;text-transform:uppercase;color:#fff;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
-  .brand{display:flex;align-items:center;gap:30px}
-  .brand img{width:128px;height:auto;display:block}
-  .brand span{font-size:84px;letter-spacing:.14em;line-height:1;margin-right:-.14em}
-  .line{margin-top:48px;font-size:30px;letter-spacing:.04em}
-  .proof{position:absolute;bottom:52px;display:flex;gap:36px;font-size:16px;letter-spacing:.2em;color:rgba(255,255,255,.5)}
-  .proof span:last-child{color:#B793ED}
+  html,body{margin:0;width:1200px;height:630px;background:#F3F3F3;overflow:hidden}
+  body{font-family:Inter,sans-serif;color:#000;position:relative}
+  /* Holographic wash: the orb frame blown up and blurred. */
+  .wash{position:absolute;inset:-20%;background:url(../src/assets/orb-poster.webp) 28% 50%/cover;
+    filter:blur(60px) saturate(2);opacity:.9}
+  /* The orb itself, crisp, on the left. The frame is 3828x2164 (950x537 here)
+     with the orb at 28% across and 50% down; these offsets centre it at
+     (230, 280), whole, clear of the headline. */
+  .orb{position:absolute;left:-36px;top:12px;width:950px;height:537px;
+    background:url(../src/assets/orb-poster.webp) center/cover;
+    -webkit-mask-image:radial-gradient(circle closest-side at 28% 50%,#000 78%,transparent 100%);
+            mask-image:radial-gradient(circle closest-side at 28% 50%,#000 78%,transparent 100%)}
+  .brand{position:absolute;top:52px;right:64px;display:flex;align-items:center;gap:16px}
+  .brand i{width:52px;height:52px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center}
+  .brand img{width:32px;height:auto;display:block}
+  .brand span{font-weight:600;font-size:24px;letter-spacing:.2em;text-transform:uppercase}
+  h1{position:absolute;right:64px;bottom:150px;margin:0;text-align:right;text-transform:uppercase;
+    font-weight:600;font-size:76px;line-height:.9;letter-spacing:-.01em}
+  .sub{position:absolute;right:64px;bottom:104px;font-weight:500;font-size:21px;color:rgba(0,0,0,.7)}
+  .proof{position:absolute;left:64px;right:64px;bottom:44px;display:flex;gap:36px;padding-top:18px;
+    border-top:1px solid rgba(0,0,0,.2);font-weight:600;font-size:15px;letter-spacing:.2em;
+    text-transform:uppercase;color:rgba(0,0,0,.65)}
+  .proof .url{margin-left:auto;color:#5E0ED7}
 </style></head>
 <body>
-  <div class="brand"><img src="relay-mark.png" alt=""><span>Relay</span></div>
-  <div class="line">Your on-demand growth partner.</div>
-  <div class="proof"><span>More customers</span><span>Better retention</span><span>Less busywork</span></div>
+  <div class="wash"></div>
+  <div class="orb"></div>
+  <div class="brand"><i><img src="relay-mark.png" alt=""></i><span>Relay</span></div>
+  <h1>Your fractional<br>growth partner.</h1>
+  <div class="sub">More customers. More returning customers. More growth.</div>
+  <div class="proof"><span>Acquire</span><span>Convert</span><span>Retain</span><span class="url">relayy.co.uk</span></div>
 </body></html>

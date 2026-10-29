@@ -6,6 +6,32 @@ export const ACCENT = '#5E0ED7'
 export const ACCENT_ON_DARK = '#B793ED'
 export const EASE = [0.22, 1, 0.36, 1] as const
 
+/**
+ * The type scale below the headings, so every section sets the same role the
+ * same way. Colour is left to the caller (white/black and its opacity).
+ *
+ * - `lead`: the one large sentence that opens a section's argument.
+ * - `title`: item titles (cards, steps, questions) in the label voice.
+ * - `body`: paragraphs inside cards, steps and answers.
+ * - `label`: meta, captions, filters, small print in caps.
+ * - `action`: inline text links that do something.
+ *
+ * Section subheaders use `Body`; section headings use `ClipHeading`.
+ */
+export const TYPE = {
+  lead: 'text-lg font-semibold leading-snug sm:text-xl lg:text-2xl',
+  title: 'text-sm font-semibold uppercase leading-snug tracking-widest sm:text-base',
+  body: 'text-sm font-medium leading-relaxed sm:text-base',
+  label: 'text-[11px] font-semibold uppercase tracking-widest sm:text-xs',
+  action: 'text-xs font-semibold uppercase tracking-widest sm:text-sm',
+} as const
+
+/** Padding for every boxed cell: capability cards, case-study cards, footer. */
+export const CELL_PAD = 'px-6 py-8 sm:px-8 sm:py-10'
+
+/** Gap from a section's heading block to its main content. */
+export const CONTENT_GAP = 'mt-10 md:mt-12'
+
 /** Same fade-up the hero uses, re-triggered on scroll instead of on load. */
 export const fadeUp: Variants = {
   hidden: { opacity: 0, y: 32 },
@@ -145,7 +171,7 @@ export function ClipHeading({
                 transition: { delay: i * 0.14, duration: 0.7, ease: EASE },
               },
             }}
-            className={`block uppercase ${light ? 'text-white' : 'text-black'}`}
+            className={`block text-balance uppercase ${light ? 'text-white' : 'text-black'}`}
             style={{ fontSize: size, lineHeight: 0.92, fontWeight: 600 }}
           >
             {/* trailing space: each line is its own block, so without it the
@@ -289,7 +315,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`scroll-mt-8 px-5 py-16 sm:px-8 sm:py-28 md:px-12 md:py-36 ${className}`}
+      className={`scroll-mt-8 px-5 py-14 sm:px-8 sm:py-20 md:px-12 md:py-24 ${className}`}
     >
       {children}
     </section>

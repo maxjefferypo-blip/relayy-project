@@ -3,23 +3,24 @@ import { m, type Variants } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, X } from 'lucide-react'
 import { ORB_POSTER, ORB_VIDEO } from '@/lib/media'
 import { LoopVideo } from '@/components/ui/loop-video'
+import { CornerMarks } from './primitives'
 
 const ACCENT = '#5E0ED7'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const NAV_LINKS = [
-  { label: 'What We Solve', href: '#capabilities' },
+  { label: 'Your Focus', href: '#capabilities' },
   { label: 'Examples', href: '#examples' },
   { label: 'Contact', href: '#contact' },
 ]
 
 /** Proof points, not headlines — deliberately smaller than the h1. */
-const PROOF_POINTS = ['More Customers', 'Better Retention', 'Less Busywork']
+const PROOF_POINTS = ['Acquire', 'Convert', 'Retain']
 
-const HEADING_WORDS = ['Your On-Demand', 'Growth Partner.']
+const HEADING_WORDS = ['Your Fractional', 'Growth Partner.']
 
-const CTA_LABEL = 'Tell Us The Problem'
-const WORK_LABEL = 'See Our Work'
+const CTA_LABEL = 'Tell Me The Problem'
+const WORK_LABEL = 'See The Work'
 
 
 const fadeDown: Variants = {
@@ -55,6 +56,100 @@ function Logo() {
         className="w-[22px] select-none object-contain"
       />
     </div>
+  )
+}
+
+/**
+ * Founder byline. The service is one person, so the hero says who: top right
+ * on desktop, where the frame is empty. Phones get `BylinePill` in the nav.
+ *
+ * Built from the site's own parts: the hairline panel and crosshair corners of
+ * Capabilities and Contact, the uppercase label type, the accent for the role,
+ * and the capability cards' holographic mark turning on the photo's corner.
+ */
+function Byline({ className = '' }: { className?: string }) {
+  return (
+    <div
+      className={`relative flex items-center gap-4 border border-black/15 bg-[#F3F3F3]/85 py-3.5 pl-3.5 pr-5 md:gap-5 md:py-4 md:pl-4 md:pr-6 ${className}`}
+    >
+      <CornerMarks />
+
+      {/* The photo, clean, with the capability cards' holographic mark as a
+        small turning badge on its corner: the same `shape-spin` they use, so
+        reduced motion stills it. */}
+      <span className="relative block size-16 shrink-0 md:size-[4.5rem] lg:size-20">
+        <img
+          src="/max.jpg"
+          alt="Max, founder of Relay"
+          width={640}
+          height={640}
+          className="size-full select-none rounded-full border-2 border-white object-cover"
+        />
+        <span
+          aria-hidden="true"
+          className="shape-spin absolute -bottom-1 -right-1.5 block size-7 md:size-8"
+          style={{ animationDuration: '10s' }}
+        >
+          <img
+            src="/shape-9.webp"
+            alt=""
+            width={256}
+            height={256}
+            className="size-full select-none object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.18)]"
+          />
+        </span>
+      </span>
+
+      <div className="max-w-[16rem]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-black md:text-sm">
+          Hi, I’m Max
+        </p>
+        <p
+          className="mt-0.5 text-[10px] font-semibold uppercase tracking-widest md:text-[11px]"
+          style={{ color: ACCENT }}
+        >
+          Founder · Relay
+        </p>
+        <p className="mt-2 text-xs leading-relaxed text-black/70 lg:text-[13px]">
+          You’ll work directly with me, from the first call to the results.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * The byline on phones: the card does not fit beside the headline, so it
+ * shrinks to a pill in the nav, matching the height of the menu button beside
+ * it. Same photo and turning mark as the card; taps through to how the work
+ * runs.
+ */
+function BylinePill() {
+  return (
+    <a
+      href="#approach"
+      className="flex h-9 items-center gap-2 rounded-full border border-black/15 bg-[#F3F3F3]/90 py-1 pl-1 pr-3.5"
+    >
+      <span className="relative block size-7 shrink-0">
+        <img
+          src="/max.jpg"
+          alt=""
+          width={640}
+          height={640}
+          className="size-full select-none rounded-full object-cover"
+        />
+        <span
+          aria-hidden="true"
+          className="shape-spin absolute -bottom-1 -right-1.5 block size-3.5"
+          style={{ animationDuration: '10s' }}
+        >
+          <img src="/shape-9.webp" alt="" width={256} height={256} className="size-full object-contain" />
+        </span>
+      </span>
+      <span className="text-[11px] font-semibold uppercase tracking-widest text-black">
+        Hi, I’m Max
+      </span>
+    </a>
   )
 }
 
@@ -125,21 +220,37 @@ export default function Hero() {
             ))}
           </div>
 
-          <m.button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            variants={fadeDown}
-            initial="hidden"
-            animate="visible"
-            custom={5}
-            aria-label="Open menu"
-            className="flex h-9 w-9 flex-col items-center justify-center gap-1 rounded-full bg-black"
-          >
-            <span className="h-0.5 w-4 bg-white" />
-            <span className="h-0.5 w-4 bg-white" />
-            <span className="h-0.5 w-4 bg-white" />
-          </m.button>
+          <div className="flex items-center gap-2.5">
+            <m.div variants={fadeDown} initial="hidden" animate="visible" custom={4} className="md:hidden">
+              <BylinePill />
+            </m.div>
+
+            <m.button
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              variants={fadeDown}
+              initial="hidden"
+              animate="visible"
+              custom={5}
+              aria-label="Open menu"
+              className="flex h-9 w-9 flex-col items-center justify-center gap-1 rounded-full bg-black"
+            >
+              <span className="h-0.5 w-4 bg-white" />
+              <span className="h-0.5 w-4 bg-white" />
+              <span className="h-0.5 w-4 bg-white" />
+            </m.button>
+          </div>
         </nav>
+
+        <m.div
+          variants={fadeDown}
+          initial="hidden"
+          animate="visible"
+          custom={5}
+          className="absolute right-12 top-24 hidden md:block lg:top-28"
+        >
+          <Byline />
+        </m.div>
 
         {/* The middle is deliberately empty — one message per level of the
           hierarchy, and the video gets room to read. */}
@@ -179,8 +290,8 @@ export default function Hero() {
             >
               {/* Two lines at every width, like each section's subheader. */}
               <p className="max-w-[44ch] text-balance text-left text-xs font-normal leading-relaxed text-black/70 lg:text-sm">
-                We find what’s holding your business back, then make it
-                happen.
+                More customers, more returning customers, more growth. Without
+                the agency overhead.
               </p>
             </m.div>
           </div>

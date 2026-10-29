@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowUpRight } from 'lucide-react'
-import { ClipHeading, CornerMarks, Eyebrow, Reveal, Section } from './primitives'
+import { FOCUSES, onFocusSelected } from '@/lib/focus'
+import { Body, ClipHeading, CornerMarks, Reveal, Section, TYPE } from './primitives'
 
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
 
@@ -19,7 +20,7 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
 const DETAILS = [
   { label: 'Email', value: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
   { label: 'Based', value: 'United Kingdom' },
-  { label: 'Initial Chat', value: '30 minutes · No obligation' },
+  { label: 'First Call', value: '30 minutes with Max · No obligation' },
 ]
 
 const FIELDS = [
@@ -29,9 +30,9 @@ const FIELDS = [
   { name: 'website', label: 'Website', placeholder: 'yourbusiness.com', type: 'text', required: false },
 ] as const
 
-const labelClass = 'block text-[10px] font-semibold uppercase tracking-widest text-black/50'
+const labelClass = `block ${TYPE.label} text-black/60`
 const inputClass =
-  'mt-2.5 w-full border border-black/15 bg-white px-4 py-3 text-sm font-medium text-black outline-none transition-colors placeholder:text-black/30 focus:border-black/50 sm:text-base'
+  'mt-2.5 w-full border border-black/15 bg-white px-4 py-3 text-sm font-medium text-black outline-none transition-colors placeholder:text-black/50 focus:border-black/50 sm:text-base'
 
 export default function Contact() {
   const [values, setValues] = useState({
@@ -39,12 +40,16 @@ export default function Contact() {
     business: '',
     email: '',
     website: '',
+    focus: '',
     problem: '',
   })
   /** Bait field: hidden from people, filled by bots. */
   const [trap, setTrap] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const sentRef = useRef<HTMLDivElement>(null)
+
+  // A focus card in Capabilities pre-selects its answer here.
+  useEffect(() => onFocusSelected((key) => setValues((v) => ({ ...v, focus: key }))), [])
 
   // The thank-you panel is shorter than the form it replaces, so on a phone it
   // can land above the viewport. Focusing it scrolls it back into view and
@@ -69,7 +74,11 @@ export default function Contact() {
       const res = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...values, _subject: subject }),
+        body: JSON.stringify({
+          ...values,
+          focus: FOCUSES.find((f) => f.key === values.focus)?.label ?? '',
+          _subject: subject,
+        }),
       })
       if (!res.ok) throw new Error(String(res.status))
       setStatus('sent')
@@ -87,17 +96,14 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2">
             {/* Left — the pitch */}
             <div className="border-b border-black/15 p-6 sm:p-10 lg:border-b-0 lg:border-r lg:p-14">
-              <Eyebrow>Where Do We Start?</Eyebrow>
-
               <ClipHeading
-                lines={['What’s holding', 'you back?']}
-                className="mt-5 md:mt-6"
+                lines={['What’s holding you back?']}
                 size="clamp(1.125rem, 2.6vw, 2.5rem)"
               />
 
-              <p className="mt-6 max-w-md text-balance text-sm font-normal leading-relaxed text-black/60 sm:text-base">
-                Tell us the problem. You don’t need to know the solution; that’s our job.
-              </p>
+              <Body className="mt-6 max-w-md md:mt-8">
+                Tell me the problem. You don’t need to know the solution; that’s my job.
+              </Body>
 
               <dl className="mt-10 flex flex-col gap-6 sm:mt-12">
                 {DETAILS.map((item) => (
@@ -129,15 +135,14 @@ export default function Contact() {
                   role="status"
                   className="flex h-full min-h-[18rem] flex-col justify-center outline-none"
                 >
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-accent">
+                  <p className={`${TYPE.label} text-accent`}>
                     Enquiry sent
                   </p>
-                  <p className="mt-5 max-w-sm text-lg font-semibold uppercase leading-tight text-black sm:text-xl">
-                    Thanks — we’ve got it.
+                  <p className={`mt-5 max-w-sm ${TYPE.lead} uppercase text-black`}>
+                    Thanks — I’ve got it.
                   </p>
-                  <p className="mt-4 max-w-sm text-sm font-medium leading-relaxed text-black/60 sm:text-base">
-                    A real person will read this and get back to you, usually within a working
-                    day.
+                  <p className={`mt-4 max-w-sm ${TYPE.body} text-black/60`}>
+                    I’ll read it myself and get back to you, usually within a working day.
                   </p>
                 </div>
               ) : (
@@ -168,6 +173,28 @@ export default function Contact() {
                   </div>
                 ))}
 
+                <fieldset>
+                  <legend className={labelClass}>What’s your focus?</legend>
+                  <div className="mt-2.5 flex flex-wrap gap-2">
+                    {FOCUSES.map((f) => (
+                      <label
+                        key={f.key}
+                        className="cursor-pointer border border-black/15 bg-white px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-black/60 transition-colors hover:border-black/40 has-[:checked]:border-black has-[:checked]:bg-black has-[:checked]:text-white has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent sm:text-[13px]"
+                      >
+                        <input
+                          type="radio"
+                          name="focus"
+                          value={f.key}
+                          checked={values.focus === f.key}
+                          onChange={() => setValues((v) => ({ ...v, focus: f.key }))}
+                          className="sr-only"
+                        />
+                        {f.label}
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
                 <div>
                   <label htmlFor="problem" className={labelClass}>
                     What’s holding you back?
@@ -178,7 +205,7 @@ export default function Contact() {
                     name="problem"
                     required
                     rows={4}
-                    placeholder="For example: plenty of people visit our website but hardly anyone books, customers buy once and never come back, or admin eats our week..."
+                    placeholder="For example: plenty of people find us but few book, first-timers rarely come back, or we never follow up with past customers..."
                     value={values.problem}
                     onChange={(e) => setValues((v) => ({ ...v, problem: e.target.value }))}
                     className={`${inputClass} resize-none`}
@@ -203,23 +230,23 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={status === 'sending'}
-                  className="group mt-2 flex w-full items-center justify-center gap-2 bg-black px-6 py-4 text-xs font-semibold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
+                  className={`group mt-2 flex w-full items-center justify-center gap-2 bg-black px-6 py-4 ${TYPE.action} text-white transition-colors duration-300 hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm`}
                 >
-                  {status === 'sending' ? 'Sending…' : 'Tell us about your business'}
+                  {status === 'sending' ? 'Sending…' : 'Tell me about your business'}
                   <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </button>
 
                 {status === 'error' ? (
                   <p role="alert" className="text-[11px] font-medium text-accent">
-                    That didn’t send. Please try again, or email us directly at{' '}
+                    That didn’t send. Please try again, or email me directly at{' '}
                     <a href={`mailto:${CONTACT_EMAIL}`} className="underline">
                       {CONTACT_EMAIL}
                     </a>
                     .
                   </p>
                 ) : (
-                  <p className="text-[11px] font-medium italic text-black/40">
-                    No sales pitch from a robot. A real person will get back to you.
+                  <p className="text-[11px] font-medium italic text-black/55">
+                    No sales pitch from a robot. Max will get back to you.
                   </p>
                 )}
               </form>

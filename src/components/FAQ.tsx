@@ -1,5 +1,6 @@
 import { Plus } from 'lucide-react'
-import { Body, ClipHeading, Eyebrow, Reveal, Section } from './primitives'
+import { HoloGround } from '@/components/ui/holo-ground'
+import { Body, ClipHeading, Reveal, Section, TYPE } from './primitives'
 
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
 
@@ -20,37 +21,37 @@ const FAQS = [
   {
     question: 'What does Relay actually do?',
     answer:
-      'We’re an on-demand growth partner. We help growing businesses win more customers, keep them for longer, make more from what they’ve got and get time back. You bring the problem; we work out the right fix and deliver it, whether that’s a website, a campaign, a customer journey or an automation.',
-  },
-  {
-    question: 'Who do you work with?',
-    answer:
-      'Businesses with an established product or service and existing customers, who know there’s room to grow but don’t have the time or specialist capacity to chase it. Your situation matters more than your sector: clinics, retailers, hotels, venues and B2B companies all fit.',
+      'Relay is a fractional growth partner. I help businesses get more customers, convert more of the interest they already have and bring people back. I find the biggest lever, run experiments across ads, websites, email, SMS and even physical letters, and measure what works.',
   },
   {
     question: 'Who will we actually work with?',
     answer:
-      'Relay is founder-led. You work directly with the person diagnosing the problem and delivering the fix, not an account manager passing notes along. For highly specialised work we bring in trusted collaborators, and we’ll tell you when we do.',
+      'Me, Max. No account managers or handoffs: the person who diagnoses the problem is the person doing the work. For highly specialised jobs I bring in trusted collaborators, and I’ll tell you when I do.',
   },
   {
-    question: 'Do we have to change our software?',
+    question: 'Who do you work with?',
     answer:
-      'Usually not. We build around what you already use, whether that’s WhatsApp, Gmail, HubSpot, Calendly, Stripe or Xero. If something really does need replacing, we’ll tell you why before we build anything.',
+      'Businesses where customers book, visit and come back: wellness and recovery clinics, gyms, spas, aesthetics and hospitality. Usually established, with real customers, but nobody in-house who owns growth.',
   },
   {
-    question: 'Do we need to use AI?',
+    question: 'How is this different from an agency?',
     answer:
-      'No. We use it where it earns its place, like drafting review replies or writing up the weekly numbers. More often the quickest wins are faster replies and follow-up that actually happens.',
+      'You get a hands-on growth function, not a list of deliverables. I focus on one growth problem at a time, test it properly and judge it on your numbers, without the overhead of a bigger team.',
+  },
+  {
+    question: 'Do we need new software or AI?',
+    answer:
+      'Usually not. I’m tool-agnostic: I build around what you already use, from WhatsApp and Gmail to HubSpot, Calendly or Stripe, and bring in AI or new tools only where they earn their place. If something really needs replacing, I’ll explain why first.',
   },
   {
     question: 'What does it cost?',
     answer:
-      'There are three ways to work with us. A Growth Review is a fixed-fee look at what’s holding you back. A Growth Sprint solves one specific problem at a fixed scope and price. A Growth Partner retainer gives you ongoing expertise and execution with agreed monthly capacity. Either way, scope and cost are agreed before we start.',
+      'Most clients start with a Growth Sprint: two to four weeks to find one opportunity, launch one or two experiments and measure early results. If it works, we carry on monthly with a defined scope. The price is agreed before we start.',
   },
   {
     question: 'What happens on the first call?',
     answer:
-      'It’s 30 minutes, with no obligation. You tell us what’s getting in the way. We’ll tell you where we’d look first, and whether we’re the right people to do it.',
+      'It’s 30 minutes with me, with no obligation. You tell me what’s getting in the way. I’ll tell you where I’d look first, and whether I’m the right person to help.',
   },
 ]
 
@@ -59,26 +60,28 @@ const FAQS = [
  * shared `name` makes them an exclusive accordion where supported (opening one
  * closes the others); older browsers just let several stay open.
  *
- * White, between Contact's #F2F2F2 and the dark footer, so it still reads as
- * its own section. Solid hairlines top and bottom, faint dotted rules between
+ * Dark, after Contact's light panel, so the page keeps alternating; the
+ * footer below it is separated by a hairline. Solid hairlines top and bottom, faint dotted rules between
  * questions, so the stack reads as one piece rather than six. No crosshairs
  * like Contact's panel: they would read as a second set of expand icons.
  */
 export default function FAQ() {
   return (
-    <Section id="faq" className="bg-white">
-      <div className="lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
-        <div>
-          <Eyebrow>FAQ</Eyebrow>
+    <Section id="faq" className="relative overflow-hidden bg-[#0A0A0A]">
+      <HoloGround dark />
 
-          <ClipHeading lines={['Straight', 'answers.']} className="mt-6 md:mt-8" />
+      <div className="relative">
+      <ClipHeading lines={['Straight answers.']} light />
+
+      <div className="mt-6 md:mt-8 lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-16">
+        <div>
 
           <Reveal index={1}>
-            <Body className="mt-6 max-w-sm md:mt-10">
-              Anything else? Ask us at{' '}
+            <Body light className="max-w-sm">
+              Anything else? Ask me at{' '}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
-                className="-my-1 inline-block py-1 text-black underline decoration-black/30 underline-offset-4 transition-opacity hover:opacity-60"
+                className="-my-1 inline-block py-1 text-white underline decoration-white/40 underline-offset-4 transition-opacity hover:opacity-60"
               >
                 {CONTACT_EMAIL}
               </a>
@@ -86,38 +89,31 @@ export default function FAQ() {
           </Reveal>
         </div>
 
-        <Reveal index={2} className="mt-10 sm:mt-14 lg:mt-0">
-          <div className="border-y border-black/15">
-            {FAQS.map(({ question, answer }, i) => (
+        <Reveal index={2} className="mt-8 lg:mt-0">
+          <div className="border-y border-white/20">
+            {FAQS.map(({ question, answer }) => (
               <details
                 key={question}
                 name="faq"
-                className="group border-t border-dotted border-black/25 first-of-type:border-t-0"
+                className="group border-t border-dotted border-white/25 first-of-type:border-t-0"
               >
                 <summary className="flex cursor-pointer list-none items-baseline gap-4 py-6 sm:gap-6 sm:py-7 [&::-webkit-details-marker]:hidden">
-                  {/* Decorative index, in the Flow chips' small caps. */}
-                  <span
-                    aria-hidden="true"
-                    className="w-5 shrink-0 text-[10px] font-semibold tabular-nums tracking-widest text-black/30 sm:text-[11px]"
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <h3 className="flex-1 text-sm font-semibold uppercase leading-snug tracking-widest text-black transition-opacity duration-300 group-hover:opacity-60 group-open:!opacity-100 sm:text-base">
+                  <h3 className={`flex-1 ${TYPE.title} text-white transition-opacity duration-300 group-hover:opacity-60 group-open:!opacity-100`}>
                     {question}
                   </h3>
                   <Plus
                     aria-hidden="true"
-                    className="size-4 shrink-0 self-center text-black/40 transition-transform duration-300 group-open:rotate-45 group-open:text-black motion-reduce:transition-none sm:size-5"
+                    className="size-4 shrink-0 self-center text-white/60 transition-transform duration-300 group-open:rotate-45 group-open:text-white motion-reduce:transition-none sm:size-5"
                   />
                 </summary>
-                {/* Indented to sit under the question, past the index. */}
-                <p className="max-w-[56ch] pb-7 pl-9 pr-8 text-sm font-medium leading-relaxed text-black/60 sm:pl-11 sm:text-base">
+                <p className={`max-w-[56ch] pb-7 pr-8 ${TYPE.body} text-white/70`}>
                   {answer}
                 </p>
               </details>
             ))}
           </div>
         </Reveal>
+      </div>
       </div>
     </Section>
   )

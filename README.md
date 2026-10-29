@@ -1,6 +1,6 @@
 # Relay
 
-Marketing site for Relay — an on-demand growth partner for growing businesses.
+Marketing site for Relay — a founder-led, fractional growth partner.
 Single-page React app, prerendered to static HTML at build time: hero,
 capability grid, thesis section, work examples, enquiry form and FAQ.
 
@@ -459,7 +459,7 @@ so a `motion.*` component throws instead of quietly pulling the full bundle back
 `index.html` carries the title, description, canonical, Open Graph and Twitter
 card tags, and `ProfessionalService` JSON-LD. `public/` has `robots.txt`,
 `sitemap.xml`, a branded `404.html` (standalone — the React app never mounts
-there, so the brand is inlined) and `og-image.png` (1200x630, logo-forward,
+there, so the brand is inlined) and `og-image-v2.png` (1200x630, mirrors the hero,
 since link previews in WhatsApp and Slack are small and brand recognition
 matters more there than a headline). Its source is `assets-src/og-image.html`,
 with the command to re-render it at the top. **Re-render it when the hero copy

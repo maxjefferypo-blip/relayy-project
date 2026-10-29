@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { Body, ClipHeading, Eyebrow, Flow, Reveal, Section } from './primitives'
+import { HoloGround } from '@/components/ui/holo-ground'
+import { Body, CELL_PAD, CONTENT_GAP, ClipHeading, Flow, Reveal, Section, TYPE } from './primitives'
 
 type Example = {
   title: string
@@ -18,20 +19,33 @@ type Example = {
    * has agreed to be named.
    */
   client: { name: string; initials: string; logo?: string }
+  result: Result
 }
+
+/**
+ * The outcome a card leads with.
+ *
+ * PLACEHOLDER: every figure below is illustrative, not a measured result.
+ * Replace each with the client's real number (and their agreement to show it)
+ * before this goes live — invented results next to real client names would
+ * mislead visitors and misrepresent those clients.
+ */
+type Result = { metric: string; label: string }
 
 const SYSTEMS: Example[] = [
   {
     title: 'Wellness CRM',
     client: { name: 'Northside Spas', initials: 'NS', logo: '/clients/northside-spas.png' },
-    body: 'Turned booking data into repeat customers with one CRM that knows who’s new, who’s returning and who’s disappearing, with follow-up and rebooking handled automatically. More repeat visits. Less CRM admin.',
+    body: 'Turned booking data into repeat customers with one CRM that knows who’s new, who’s returning and who’s disappearing, with follow-up and rebooking handled automatically.',
     flow: ['Booking', 'History', 'Follow-Up', 'Rebook'],
+    result: { metric: '+27%', label: 'Repeat visits in 90 days' },
   },
   {
     title: 'Padel Bookings',
     client: { name: 'Baseline', initials: 'BP', logo: '/clients/baseline.png' },
-    body: 'Made the customer journey run itself: confirmations, cancellations, enquiries, follow-ups and re-engagement all handled automatically. More bookings. Better utilisation. Less admin.',
+    body: 'Made the customer journey run itself: confirmations, cancellations, enquiries, follow-ups and re-engagement all handled automatically.',
     flow: ['Book', 'Confirm', 'Refill', 'Rebook'],
+    result: { metric: '+18%', label: 'Court utilisation' },
   },
   /*
    * These two deliberately sit outside the booking-and-CRM pattern of the two
@@ -42,18 +56,28 @@ const SYSTEMS: Example[] = [
   {
     title: 'Review Replies',
     client: { name: 'The Granary', initials: 'TG', logo: '/clients/the-granary.png' },
-    body: 'Watched for new reviews, drafted a reply in the venue’s own voice for one-click approval, and routed anything negative to a manager instead of answering it automatically. Better reputation. Minutes, not hours.',
+    body: 'Watched for new reviews, drafted a reply in the venue’s own voice for one-click approval, and routed anything negative to a manager instead of answering it automatically.',
     flow: ['Review', 'Draft', 'Approve', 'Post'],
+    result: { metric: '4 hrs', label: 'Average reply time, down from 3 days' },
   },
   {
     title: 'Weekly Reporting',
     client: { name: 'Forge Fitness', initials: 'FF', logo: '/clients/forge-fitness.png' },
-    body: 'Pulled numbers from the booking, payment and membership systems into one plain-English summary every Monday, so nobody had to build the report by hand. Clearer numbers. No manual reporting.',
+    body: 'Pulled numbers from the booking, payment and membership systems into one plain-English summary every Monday, so nobody had to build the report by hand.',
     flow: ['Collect', 'Summarise', 'Send'],
+    result: { metric: '5 hrs', label: 'Saved every week' },
   },
 ]
 
-type Campaign = { src: string; alt: string; title: string; client: string; width: number; height: number }
+type Campaign = {
+  src: string
+  alt: string
+  title: string
+  client: string
+  width: number
+  height: number
+  result: Result
+}
 
 /**
  * Campaign creative, served from `public/work/` (originals in
@@ -68,6 +92,7 @@ const CAMPAIGNS: Campaign[] = [
     client: 'Olenphogy',
     width: 900,
     height: 1125,
+    result: { metric: '3.1×', label: 'Return on ad spend' },
   },
   {
     src: '/work/issue-08.jpg',
@@ -76,6 +101,7 @@ const CAMPAIGNS: Campaign[] = [
     client: 'Issue 08',
     width: 736,
     height: 920,
+    result: { metric: '+42%', label: 'Event registrations' },
   },
   {
     src: '/work/sle-transit.jpg',
@@ -84,6 +110,7 @@ const CAMPAIGNS: Campaign[] = [
     client: 'SLÉ',
     width: 900,
     height: 1107,
+    result: { metric: '+35%', label: 'App downloads in campaign weeks' },
   },
 ]
 
@@ -130,6 +157,7 @@ function ClientMark({ name, initials, logo }: Example['client']) {
         alt={name}
         onError={() => setFailed(true)}
         loading="lazy"
+        draggable={false}
         /* White silhouettes on transparency, so they sit straight on the card
           like the tool marks in Capabilities — no white chip breaking the
           surface. Held back to 70% and brought up with the card on hover. */
@@ -143,7 +171,7 @@ function ClientMark({ name, initials, logo }: Example['client']) {
       <span className="flex size-9 shrink-0 items-center justify-center border border-white/20 text-xs font-semibold uppercase text-white/70 transition-colors duration-500 group-hover:border-white/40 group-hover:text-white motion-reduce:transition-none">
         {initials}
       </span>
-      <span className="text-[11px] font-semibold uppercase tracking-widest text-white/40 transition-colors duration-500 group-hover:text-white/60 motion-reduce:transition-none">
+      <span className={`${TYPE.label} text-white/60 transition-colors duration-500 group-hover:text-white/80 motion-reduce:transition-none`}>
         {name}
       </span>
     </div>
@@ -166,25 +194,28 @@ function SlideFrame({ slide }: { slide: Slide }) {
   const client = slide.kind === 'system' ? slide.item.client.name : slide.item.client
 
   return (
-    <figure className="group flex w-[82%] shrink-0 snap-start flex-col sm:w-[46%] lg:w-[34%] xl:w-[30%]">
+    <figure className="group flex w-[80%] shrink-0 snap-start flex-col sm:w-[46%] lg:w-[34%] xl:w-[30%]">
+      {/* One frame per card, media and result together, so neighbouring cards
+        never read as a pair. */}
+      <div className="flex flex-1 flex-col border border-white/20 bg-[#0A0A0A] transition-colors duration-500 group-hover:border-white/35">
       {slide.kind === 'system' ? (
-        <div className="flex aspect-[4/5] flex-1 flex-col border border-white/15 bg-[#0A0A0A] px-6 py-8 transition-colors duration-500 group-hover:bg-[#111111] sm:px-7 sm:py-9 md:px-8 md:py-10">
+        <div className={`flex aspect-[4/5] flex-1 flex-col ${CELL_PAD}`}>
           <ClientMark {...slide.item.client} />
 
-          <h3 className="mt-6 text-sm font-semibold uppercase tracking-widest text-white sm:text-base">
+          <h3 className={`mt-6 ${TYPE.title} text-white`}>
             {slide.item.title}
           </h3>
 
-          <p className="mt-4 text-sm font-medium leading-relaxed text-white/50 sm:text-base">
+          <p className={`mt-4 ${TYPE.body} text-white/60`}>
             {slide.item.body}
           </p>
 
-          <div className="mt-auto pt-8">
+          <div className="mt-auto hidden pt-8 sm:block">
             <Flow steps={slide.item.flow} light />
           </div>
         </div>
       ) : (
-        <div className="relative aspect-[4/5] flex-1 overflow-hidden border border-white/15 bg-white/5">
+        <div className="relative aspect-[4/5] flex-1 overflow-hidden bg-white/5">
           <img
             src={slide.item.src}
             alt={slide.item.alt}
@@ -197,9 +228,19 @@ function SlideFrame({ slide }: { slide: Slide }) {
         </div>
       )}
 
-      <figcaption className="mt-3 flex items-center justify-between gap-4 text-[9px] font-semibold uppercase tracking-widest sm:text-[10px]">
-        <span className="text-white/80">{kind}</span>
-        <span className="truncate text-white/40">{client}</span>
+        <div className="mt-auto border-t border-white/20 px-6 py-5 sm:px-8 sm:py-6">
+          <p className="text-3xl font-semibold tabular-nums leading-none tracking-tight text-white sm:text-4xl">
+            {slide.item.result.metric}
+          </p>
+          <p className={`mt-2 ${TYPE.label} text-white/60`}>
+            {slide.item.result.label}
+          </p>
+        </div>
+      </div>
+
+      <figcaption className={`mt-3 flex items-center justify-between gap-4 ${TYPE.label}`}>
+        <span className="text-black">{kind}</span>
+        <span className="truncate text-black/60">{client}</span>
       </figcaption>
     </figure>
   )
@@ -235,6 +276,69 @@ export default function Examples() {
     }
   }, [filter])
 
+  /*
+   * Mouse drag on desktop. Touch and trackpads already scroll natively; a
+   * mouse can't, so dragging moves the track directly with snapping off, then
+   * glides to the nearest slide and hands snapping back. A drag that moved
+   * swallows the click that ends it, so releasing over a card does nothing.
+   */
+  useEffect(() => {
+    const el = track.current
+    if (!el) return
+
+    let startX = 0
+    let startLeft = 0
+    let dragging = false
+    let moved = false
+
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return
+      dragging = true
+      moved = false
+      startX = e.clientX
+      startLeft = el.scrollLeft
+      el.style.scrollSnapType = 'none'
+      el.style.userSelect = 'none'
+      el.style.cursor = 'grabbing'
+    }
+    const onMove = (e: PointerEvent) => {
+      if (!dragging) return
+      const dx = e.clientX - startX
+      if (Math.abs(dx) > 4) moved = true
+      el.scrollLeft = startLeft - dx
+    }
+    const onUp = () => {
+      if (!dragging) return
+      dragging = false
+      el.style.userSelect = ''
+      el.style.cursor = ''
+      const slide = el.firstElementChild as HTMLElement | null
+      const gap = parseFloat(getComputedStyle(el).columnGap) || 0
+      const width = slide ? slide.offsetWidth + gap : 0
+      if (width) el.scrollTo({ left: Math.round(el.scrollLeft / width) * width, behavior: 'smooth' })
+      window.setTimeout(() => {
+        el.style.scrollSnapType = ''
+      }, 450)
+    }
+    const onClick = (e: MouseEvent) => {
+      if (!moved) return
+      e.preventDefault()
+      e.stopPropagation()
+      moved = false
+    }
+
+    el.addEventListener('pointerdown', onDown)
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+    el.addEventListener('click', onClick, true)
+    return () => {
+      el.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('pointermove', onMove)
+      window.removeEventListener('pointerup', onUp)
+      el.removeEventListener('click', onClick, true)
+    }
+  }, [])
+
   const step = (direction: 1 | -1) => {
     const el = track.current
     const slide = el?.firstElementChild as HTMLElement | null
@@ -244,26 +348,20 @@ export default function Examples() {
   }
 
   const arrow =
-    'flex size-10 items-center justify-center rounded-full border border-white/20 text-white transition-opacity duration-300 hover:border-white/50 disabled:pointer-events-none disabled:opacity-30'
+    'flex size-10 items-center justify-center rounded-full border border-black/25 text-black transition-opacity duration-300 hover:border-black/60 disabled:pointer-events-none disabled:opacity-30'
 
   return (
-    <Section id="examples" className="overflow-hidden bg-[#0A0A0A]">
-      <div className="md:max-w-2xl">
-        <Eyebrow muted>Make It Real</Eyebrow>
+    <Section id="examples" className="relative overflow-hidden bg-[#F3F3F3]">
+      <HoloGround />
 
-        {/* 17 characters on the long line, the longest of any section
-          heading. Each line is clipped to its own row, so one that wraps is cut
-          in half rather than flowing — check it at 320px if it grows. */}
-        <ClipHeading
-          lines={['What this looks', 'like in practice.']}
-          className="mt-6 md:mt-8"
-          light
-        />
+      <div className="relative">
+      <div className="text-center">
+        <ClipHeading lines={['What this looks like in practice.']} />
 
         <Reveal index={1}>
-          <Body light className="mt-6 max-w-xl md:mt-10">
-            Real problems, solved. Winning customers, keeping them, and giving
-            teams their time back.
+          <Body className="mx-auto mt-6 max-w-xl md:mt-8">
+            Campaigns that bring customers in. Systems that convert them and
+            bring them back.
           </Body>
         </Reveal>
       </div>
@@ -272,7 +370,7 @@ export default function Examples() {
         {/* Controls: filters left, arrows right, on one hairline like the
           hero's proof strip. `#work` is the hero's "See Our Work" target, so
           it lands on the cards rather than the section heading. */}
-        <div id="work" className="mt-10 flex scroll-mt-6 items-center justify-between gap-4 border-t border-white/15 pt-5 sm:mt-14 md:mt-16 md:pt-6">
+        <div id="work" className={`${CONTENT_GAP} flex scroll-mt-6 items-center justify-between gap-4 border-t border-black/20 pt-5 md:pt-6`}>
           <div role="group" aria-label="Filter work" className="flex flex-wrap gap-x-5 gap-y-2 sm:gap-x-8">
             {FILTERS.map(({ label }) => (
               <button
@@ -280,8 +378,8 @@ export default function Examples() {
                 type="button"
                 onClick={() => setFilter(label)}
                 aria-pressed={filter === label}
-                className={`-my-1 py-1 text-[10px] font-semibold uppercase tracking-widest transition-colors duration-300 sm:text-[11px] md:text-xs ${
-                  filter === label ? 'text-white' : 'text-white/40 hover:text-white/70'
+                className={`-my-1 py-1 ${TYPE.label} transition-colors duration-300 ${
+                  filter === label ? 'text-black' : 'text-black/60 hover:text-black'
                 }`}
               >
                 {label}
@@ -309,13 +407,14 @@ export default function Examples() {
           role="region"
           aria-label="Our work"
           tabIndex={0}
-          className="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-px-5 px-5 sm:-mx-8 sm:mt-8 sm:scroll-px-8 sm:px-8 md:gap-8 md:-mx-12 md:scroll-px-12 md:px-12"
+          className="no-scrollbar -mx-5 mt-6 flex snap-x snap-mandatory gap-8 overflow-x-auto overscroll-x-contain scroll-px-5 md:cursor-grab px-5 sm:-mx-8 sm:mt-8 sm:scroll-px-8 sm:px-8 md:gap-8 md:-mx-12 md:scroll-px-12 md:px-12"
         >
           {slides.map((slide) => (
             <SlideFrame key={slide.key} slide={slide} />
           ))}
         </div>
       </Reveal>
+      </div>
     </Section>
   )
 }

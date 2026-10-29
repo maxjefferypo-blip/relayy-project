@@ -12,18 +12,34 @@ import {
   siXero,
   siZapier,
 } from "simple-icons";
+import { ArrowUpRight } from "lucide-react";
 import { LogoRow, type Logo } from "@/components/ui/logo-cloud";
-import { Body, ClipHeading, CornerMarks, Eyebrow, Reveal, Section } from "./primitives";
+import { selectFocus, type FocusKey } from "@/lib/focus";
+import {
+  ACCENT_ON_DARK,
+  Body,
+  CELL_PAD,
+  CONTENT_GAP,
+  ClipHeading,
+  CornerMarks,
+  Reveal,
+  Section,
+  TYPE,
+} from "./primitives";
 
 const SHAPE = "/shape-9.webp";
 
 type Capability = {
+  /** Pre-selects this outcome in the Contact form when the card is chosen. */
+  focus: FocusKey;
   title: string;
   /** The result, stated plainly. Carries the weight in the cell. */
   outcome: string;
   /** How it is actually done — the "oh, it can do that" line. */
   detail: string;
-  /** Hue shift so one render reads as six distinct marks. */
+  /** The number this work is judged on. */
+  measure: string;
+  /** Hue shift so one render reads as three distinct marks. */
   hue: number;
   /** Starting angle, kept when motion is reduced. */
   rotate: number;
@@ -36,61 +52,38 @@ type Capability = {
 
 const CAPABILITIES: Capability[] = [
   {
-    title: "Get seen",
-    outcome: "More of the right people finding you.",
-    detail: "Brand visibility, social campaigns, ads and content.",
+    focus: "acquire",
+    title: "Get more customers",
+    outcome: "Find new audiences and turn interest into first bookings.",
+    detail: "Paid ads, partnerships, local outreach, cold email and community campaigns.",
+    measure: "New customers, cost per customer",
     hue: 0,
     rotate: 0,
     spin: 12,
     pulse: 3.1,
   },
   {
-    title: "Win more customers",
-    outcome: "More leads, enquiries, bookings and sales.",
-    detail: "Websites, landing pages, lead magnets and booking journeys.",
-    hue: 60,
+    focus: "convert",
+    title: "Convert more interest",
+    outcome: "Stop paying for attention that never books.",
+    detail: "Clearer websites, landing pages, booking flows and lead follow-up.",
+    measure: "Enquiry-to-booking rate, revenue per lead",
+    hue: 125,
     rotate: 143,
     spin: 10,
     pulse: 2.7,
   },
   {
-    title: "Keep more customers",
-    outcome: "More repeat business, for longer.",
-    detail: "Customer journeys, lifecycle emails, loyalty and reactivation.",
-    hue: 120,
-    rotate: 72,
-    spin: 11,
-    reverse: true,
-    pulse: 3.4,
-  },
-  {
-    title: "Make more from what you've got",
-    outcome: "More revenue per customer, less wasted spend.",
-    detail: "Funnels, offers, pricing tests and upselling.",
-    hue: 180,
+    focus: "retain",
+    title: "Bring customers back",
+    outcome: "Turn first visits into habits and regulars.",
+    detail: "Email, SMS, newsletters, physical letters, memberships, seasonal offers and reactivation.",
+    measure: "Repeat bookings, visit frequency",
+    hue: 250,
     rotate: 219,
     spin: 13,
     reverse: true,
     pulse: 3.8,
-  },
-  {
-    title: "Get time back",
-    outcome: "Less admin, faster execution.",
-    detail: "AI workflows, CRM automation, templates and process fixes.",
-    hue: 240,
-    rotate: 301,
-    spin: 12,
-    pulse: 2.9,
-  },
-  {
-    title: "Know what's working",
-    outcome: "Clear numbers and better decisions.",
-    detail: "Reporting, tracking and regular growth reviews.",
-    hue: 300,
-    rotate: 36,
-    spin: 10,
-    reverse: true,
-    pulse: 3.3,
   },
 ];
 
@@ -117,31 +110,30 @@ export default function Capabilities() {
   return (
     <Section id="capabilities" className="bg-[#0A0A0A]">
       <div className="text-center">
-        <Eyebrow muted>What We Solve</Eyebrow>
-
-        <ClipHeading lines={["Your problem.", "Our job."]} className="mt-6 md:mt-8" light />
+        <ClipHeading lines={["Pick your focus. I’ll own it."]} light />
 
         <Reveal index={1}>
-          <Body light className="mx-auto mt-8 max-w-xl md:mt-10">
-            You know what’s holding you back. We work out the right fix and
-            make it happen.
+          <Body light className="mx-auto mt-6 max-w-xl md:mt-8">
+            What are you trying to achieve? Tell me where growth is stuck.
+            I’ll work out which levers to test, run them and measure what
+            moves.
           </Body>
         </Reveal>
       </div>
 
       {/* Boxed like the Contact panel: hairline frame, crosshair corners. */}
-      <div className="relative mt-10 sm:mt-14 md:mt-20">
+      <div className={`relative ${CONTENT_GAP}`}>
         <CornerMarks light />
 
-        <div className="grid grid-cols-1 gap-px border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-px border border-white/15 bg-white/15 lg:grid-cols-3">
           {CAPABILITIES.map(
-            ({ title, outcome, detail, hue, rotate, spin, reverse, pulse }, i) => (
+            ({ focus, title, outcome, detail, measure, hue, rotate, spin, reverse, pulse }, i) => (
               /* Each cell reveals on its own, so the grid builds rather than
                 arriving in one block. */
               <Reveal
                 key={title}
                 index={i}
-                className="group cursor-pointer bg-[#0A0A0A] px-6 py-8 transition-colors duration-500 hover:bg-[#111111] sm:px-7 sm:py-9 md:px-8 md:py-10"
+                className={`group flex flex-col bg-[#0A0A0A] transition-colors duration-500 hover:bg-[#111111] ${CELL_PAD}`}
               >
                 <div className="flex items-center gap-3">
                   {/* rotation on the wrapper, scale on the image, so the spin
@@ -176,16 +168,29 @@ export default function Capabilities() {
                       />
                     </span>
                   </span>
-                  <h3 className="text-xs font-semibold uppercase tracking-widest text-white sm:text-sm">
+                  <h3 className={`${TYPE.title} text-white`}>
                     {title}
                   </h3>
                 </div>
                 <p className="mt-5 max-w-[34ch] text-sm font-semibold leading-snug text-white sm:text-base">
                   {outcome}
                 </p>
-                <p className="mt-3 max-w-[38ch] text-sm font-medium leading-relaxed text-white/50 sm:text-base">
+                <p className={`mt-3 max-w-[38ch] ${TYPE.body} text-white/60`}>
                   {detail}
                 </p>
+                <p className={`mt-6 ${TYPE.label} text-white/60`}>
+                  Measured on <span className="text-white/70">{measure}</span>
+                </p>
+                {/* The href scrolls; the click pre-selects this focus in the form. */}
+                <a
+                  href="#contact"
+                  onClick={() => selectFocus(focus)}
+                  className={`-my-1 mt-auto flex items-center gap-1.5 self-start py-1 pt-8 ${TYPE.action} transition-opacity duration-300 hover:opacity-70`}
+                  style={{ color: ACCENT_ON_DARK }}
+                >
+                  This is my focus
+                  <ArrowUpRight className="size-4 shrink-0" />
+                </a>
               </Reveal>
             ),
           )}
@@ -193,9 +198,9 @@ export default function Capabilities() {
       </div>
 
       <Reveal index={1}>
-        <div className="mt-12 flex flex-col items-center gap-7 md:mt-16">
-          <p className="text-center text-[11px] font-semibold uppercase tracking-widest text-white/40 sm:text-xs">
-            Connects to the tools you already use
+        <div className={`${CONTENT_GAP} flex flex-col items-center gap-6`}>
+          <p className={`text-center ${TYPE.label} text-white/60`}>
+            Tool-agnostic. I work with what you already use
           </p>
           {/* Wraps rather than scrolling, so every mark is visible at any
             width instead of half the set sitting off-screen. */}

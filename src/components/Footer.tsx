@@ -1,4 +1,4 @@
-import { ACCENT_ON_DARK, Reveal } from './primitives'
+import { ACCENT_ON_DARK, CELL_PAD, Reveal, TYPE } from './primitives'
 
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
 
@@ -13,19 +13,19 @@ const CONTACT_EMAIL = 'hello@relayy.co.uk'
  * kept short deliberately, but a footer is where a full index belongs.
  */
 const INDEX = [
-  { label: 'What We Solve', href: '#capabilities' },
-  { label: 'Our Approach', href: '#approach' },
+  { label: 'Your Focus', href: '#capabilities' },
   { label: 'Examples', href: '#examples' },
+  { label: 'How I Work', href: '#approach' },
   { label: 'Contact', href: '#contact' },
   { label: 'FAQ', href: '#faq' },
 ]
 
-const CELL = 'bg-[#0A0A0A] px-6 py-8 sm:px-7 sm:py-10 md:px-9 md:py-12'
-const CELL_LABEL = 'text-[10px] font-semibold uppercase tracking-widest text-white/40 sm:text-xs'
+const CELL = `bg-[#0A0A0A] ${CELL_PAD}`
+const CELL_LABEL = `${TYPE.label} text-white/60`
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-20 md:px-12 md:pt-24">
+    <footer className="border-t border-white/15 bg-[#0A0A0A] px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-20 md:px-12 md:pt-24">
       {/* Same hairline construction as the grids above: cells sit on a 1px
         background gap rather than each carrying a border, so shared edges stay
         a single pixel. */}
@@ -47,10 +47,10 @@ export default function Footer() {
               </span>
             </div>
 
-            <p className="mt-6 max-w-md text-sm font-medium leading-relaxed text-white/50 sm:text-base">
-              Relay is an on-demand growth partner. We help growing businesses
-              win more customers, keep them for longer and work smarter, from
-              spotting the opportunity to making it happen.
+            <p className={`mt-6 max-w-md ${TYPE.body} text-white/60`}>
+              Relay is a founder-led, fractional growth partner. I help
+              businesses get more customers, convert more interest and bring
+              people back, without the agency overhead.
             </p>
           </div>
 
@@ -61,7 +61,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="-my-1 inline-block py-1 text-sm font-medium text-white/50 transition-colors duration-300 hover:text-white sm:text-base"
+                    className={`-my-1 inline-block py-1 ${TYPE.body} text-white/60 transition-colors duration-300 hover:text-white`}
                   >
                     {link.label}
                   </a>
@@ -79,7 +79,7 @@ export default function Footer() {
             >
               {CONTACT_EMAIL}
             </a>
-            <p className="mt-6 text-sm font-medium text-white/50 sm:text-base">United Kingdom</p>
+            <p className={`mt-6 ${TYPE.body} text-white/60`}>United Kingdom</p>
           </div>
         </div>
       </Reveal>
@@ -99,11 +99,11 @@ export default function Footer() {
       </Reveal>
 
       <Reveal index={2}>
-        <div className="mt-10 flex flex-col items-center gap-3 border-t border-white/15 pt-8 text-[10px] font-semibold uppercase tracking-widest text-white/40 sm:mt-12 sm:flex-row sm:justify-between sm:text-xs">
+        <div className={`mt-10 flex flex-col items-center gap-3 border-t border-white/15 pt-8 ${TYPE.label} text-white/60 sm:mt-12 sm:flex-row sm:justify-between`}>
           {/* Prerendered at build time, so after New Year the HTML says last
             year until the next deploy; the client corrects it silently. */}
           <p suppressHydrationWarning>© {new Date().getFullYear()} Relay</p>
-          <p>More customers. Better retention. Less busywork.</p>
+          <p>Acquire. Convert. Retain.</p>
         </div>
       </Reveal>
     </footer>
