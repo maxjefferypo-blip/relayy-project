@@ -1,3 +1,5 @@
+import { ORB_POSTER, ORB_VIDEO } from '@/lib/media'
+import { LoopVideo } from '@/components/ui/loop-video'
 import { ACCENT_ON_DARK, CELL_PAD, Reveal, TYPE } from './primitives'
 
 const CONTACT_EMAIL = 'hello@relayy.co.uk'
@@ -87,15 +89,29 @@ export default function Footer() {
       {/* Decorative: the brand is named in the first cell and again in the
         copyright, so this is hidden rather than read out a third time. The
         clamp is sized off the five caps (~3.1em all told) so the word fills the
-        measure without ever overrunning it. */}
+        measure without ever overrunning it.
+
+        The letters are filled with the hero orb, playing. Inside the block,
+        white-on-black text multiplies over the video: the letters pass it
+        through and everything else goes to pure black. The block then blends
+        with the footer by lighten, so that black lifts to the footer's own
+        #0A0A0A and no box shows. The orb's centre (28% across its frame) sits
+        on the word's centre, scaled so its rings cross the letters. Same file
+        as the hero background, so nothing extra loads. */}
       <Reveal index={1}>
-        <p
-          aria-hidden="true"
-          className="mt-14 select-none overflow-hidden text-center font-semibold uppercase leading-[0.8] text-white/[0.07] sm:mt-20"
-          style={{ fontSize: 'clamp(4rem, 25vw, 20rem)' }}
-        >
-          Relay
-        </p>
+        <div aria-hidden="true" className="relative mt-14 select-none overflow-hidden mix-blend-lighten sm:mt-20">
+          <LoopVideo
+            src={ORB_VIDEO}
+            poster={ORB_POSTER}
+            className="absolute left-[5%] top-1/2 w-[160%] max-w-none -translate-y-1/2"
+          />
+          <p
+            className="relative bg-black text-center font-semibold uppercase leading-[0.8] text-white mix-blend-multiply"
+            style={{ fontSize: 'clamp(4rem, 25vw, 20rem)' }}
+          >
+            Relay
+          </p>
+        </div>
       </Reveal>
 
       <Reveal index={2}>

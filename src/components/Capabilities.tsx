@@ -13,6 +13,7 @@ import {
   siZapier,
 } from "simple-icons";
 import { ArrowUpRight } from "lucide-react";
+import { HoloGround } from "@/components/ui/holo-ground";
 import { LogoRow, type Logo } from "@/components/ui/logo-cloud";
 import { selectFocus, type FocusKey } from "@/lib/focus";
 import {
@@ -33,12 +34,8 @@ type Capability = {
   /** Pre-selects this outcome in the Contact form when the card is chosen. */
   focus: FocusKey;
   title: string;
-  /** The result, stated plainly. Carries the weight in the cell. */
+  /** The result, stated plainly, in one line. The card's only copy. */
   outcome: string;
-  /** How it is actually done — the "oh, it can do that" line. */
-  detail: string;
-  /** The number this work is judged on. */
-  measure: string;
   /** Hue shift so one render reads as three distinct marks. */
   hue: number;
   /** Starting angle, kept when motion is reduced. */
@@ -55,8 +52,6 @@ const CAPABILITIES: Capability[] = [
     focus: "acquire",
     title: "Get more customers",
     outcome: "Find new audiences and turn interest into first bookings.",
-    detail: "Paid ads, partnerships, local outreach, cold email and community campaigns.",
-    measure: "New customers, cost per customer",
     hue: 0,
     rotate: 0,
     spin: 12,
@@ -66,8 +61,6 @@ const CAPABILITIES: Capability[] = [
     focus: "convert",
     title: "Convert more interest",
     outcome: "Stop paying for attention that never books.",
-    detail: "Clearer websites, landing pages, booking flows and lead follow-up.",
-    measure: "Enquiry-to-booking rate, revenue per lead",
     hue: 125,
     rotate: 143,
     spin: 10,
@@ -77,8 +70,6 @@ const CAPABILITIES: Capability[] = [
     focus: "retain",
     title: "Bring customers back",
     outcome: "Turn first visits into habits and regulars.",
-    detail: "Email, SMS, newsletters, physical letters, memberships, seasonal offers and reactivation.",
-    measure: "Repeat bookings, visit frequency",
     hue: 250,
     rotate: 219,
     spin: 13,
@@ -108,7 +99,10 @@ const WORKS_WITH: Logo[] = [
 
 export default function Capabilities() {
   return (
-    <Section id="capabilities" className="bg-[#0A0A0A]">
+    <Section id="capabilities" className="relative overflow-hidden bg-[#0A0A0A]">
+      <HoloGround dark />
+
+      <div className="relative">
       <div className="text-center">
         <ClipHeading lines={["Pick your focus. I’ll own it."]} light />
 
@@ -127,7 +121,7 @@ export default function Capabilities() {
 
         <div className="grid grid-cols-1 gap-px border border-white/15 bg-white/15 lg:grid-cols-3">
           {CAPABILITIES.map(
-            ({ focus, title, outcome, detail, measure, hue, rotate, spin, reverse, pulse }, i) => (
+            ({ focus, title, outcome, hue, rotate, spin, reverse, pulse }, i) => (
               /* Each cell reveals on its own, so the grid builds rather than
                 arriving in one block. */
               <Reveal
@@ -172,20 +166,14 @@ export default function Capabilities() {
                     {title}
                   </h3>
                 </div>
-                <p className="mt-5 max-w-[34ch] text-sm font-semibold leading-snug text-white sm:text-base">
+                <p className={`mt-4 max-w-[34ch] text-pretty ${TYPE.body} text-white/70`}>
                   {outcome}
-                </p>
-                <p className={`mt-3 max-w-[38ch] ${TYPE.body} text-white/60`}>
-                  {detail}
-                </p>
-                <p className={`mt-6 ${TYPE.label} text-white/60`}>
-                  Measured on <span className="text-white/70">{measure}</span>
                 </p>
                 {/* The href scrolls; the click pre-selects this focus in the form. */}
                 <a
                   href="#contact"
                   onClick={() => selectFocus(focus)}
-                  className={`-my-1 mt-auto flex items-center gap-1.5 self-start py-1 pt-8 ${TYPE.action} transition-opacity duration-300 hover:opacity-70`}
+                  className={`-my-1 mt-auto flex items-center gap-1.5 self-start py-1 pt-6 ${TYPE.action} transition-opacity duration-300 hover:opacity-70`}
                   style={{ color: ACCENT_ON_DARK }}
                 >
                   This is my focus
@@ -199,7 +187,7 @@ export default function Capabilities() {
 
       <Reveal index={1}>
         <div className={`${CONTENT_GAP} flex flex-col items-center gap-6`}>
-          <p className={`text-center ${TYPE.label} text-white/60`}>
+          <p className={`text-balance text-center ${TYPE.label} text-white/60`}>
             Tool-agnostic. I work with what you already use
           </p>
           {/* Wraps rather than scrolling, so every mark is visible at any
@@ -207,6 +195,7 @@ export default function Capabilities() {
           <LogoRow logos={WORKS_WITH} light className="justify-center" />
         </div>
       </Reveal>
+      </div>
     </Section>
   );
 }

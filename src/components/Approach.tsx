@@ -8,20 +8,20 @@ const STEPS = [
   {
     lead: 'Find',
     rest: 'the biggest lever.',
-    body: 'Where are customers lost, from first visit to fifth booking? I start with the change most likely to move your numbers.',
-    outcome: 'A ranked shortlist of growth opportunities',
+    body: 'Where are customers slipping away? I find the change most likely to win them back.',
+    outcome: 'A shortlist of opportunities',
   },
   {
     lead: 'Test',
     rest: 'it properly.',
-    body: 'Ads, emails, letters, booking flows. Whatever tools fit, set up and run end to end.',
-    outcome: 'Live experiments, each with a target to beat',
+    body: 'Ads, emails, letters, booking flows. Set up and run end to end.',
+    outcome: 'Live tests with clear targets',
   },
   {
     lead: 'Keep',
     rest: 'what works.',
-    body: 'Double down on what moves your numbers, drop what doesn’t, then go again.',
-    outcome: 'A before-and-after on the numbers that matter',
+    body: 'Double down on what works, drop what doesn’t, go again.',
+    outcome: 'A clear before and after',
   },
 ]
 
@@ -33,11 +33,7 @@ const SHAPE = '/shape-9.webp'
 const STEP_HUES = [0, 125, 250]
 
 /** What every engagement guarantees, whatever the work turns out to be. */
-const PROMISES = [
-  'A clear target before any work starts',
-  'Progress in plain English, every week',
-  'Results judged on your numbers, not activity',
-]
+const PROMISES = ['Clear target', 'Weekly updates', 'Real results']
 
 /**
  * Scroll position through the steps: which step sits nearest the middle of the
@@ -111,27 +107,15 @@ export default function Approach() {
         <div className="lg:self-start">
           <Reveal index={1}>
             <p className={`max-w-[34ch] ${TYPE.lead} text-white`}>
-              I care about one thing: helping your business grow, in a way you
-              can see in the numbers.
-            </p>
-            <p className={`mt-4 max-w-[52ch] ${TYPE.body} text-white/60`}>
-              No vanity reports, no account managers. Just someone as invested
-              in your growth as you are.
+              Growth you can point to: more bookings, more repeat visits, more
+              revenue.
             </p>
           </Reveal>
 
           <Reveal index={2}>
-            <ul className="mt-8 border-t border-white/15">
+            <ul className={`mt-6 flex flex-wrap gap-x-5 gap-y-2 ${TYPE.label} text-white/70`}>
               {PROMISES.map((promise) => (
-                <li
-                  key={promise}
-                  className="flex items-baseline gap-3 border-b border-white/15 py-3.5 text-sm font-semibold text-white sm:text-base"
-                >
-                  <span aria-hidden="true" style={{ color: ACCENT_ON_DARK }}>
-                    →
-                  </span>
-                  {promise}
-                </li>
+                <li key={promise}>{promise}</li>
               ))}
             </ul>
 
