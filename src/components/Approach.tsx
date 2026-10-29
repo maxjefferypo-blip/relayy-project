@@ -94,24 +94,21 @@ function useStepProgress() {
 /**
  * How the work runs, after the case studies have shown what it produces. The
  * founder is introduced in the hero, so this section is about outcomes: what
- * each step hands over, and what every engagement guarantees. On wide screens
- * the promise stays pinned while the steps scroll past it, each lighting up as
- * it reaches the middle of the screen.
+ * each step hands over, and what every engagement guarantees. The steps light
+ * up in turn as each reaches the middle of the screen.
  */
 export default function Approach() {
   const { listRef, active, progress } = useStepProgress()
 
   return (
-    // overflow-clip, not overflow-hidden: hidden would make the section a
-    // scroll container and break the sticky column.
-    <Section id="approach" className="relative overflow-clip bg-[#0A0A0A]">
+    <Section id="approach" className="relative overflow-hidden bg-[#0A0A0A]">
       <HoloGround dark />
 
       <div className="relative">
       <ClipHeading lines={['Impact you can measure.']} light />
 
       <div className="mt-6 grid gap-10 md:mt-8 lg:grid-cols-2 lg:gap-20">
-        <div className="lg:sticky lg:top-24 lg:self-start">
+        <div className="lg:self-start">
           <Reveal index={1}>
             <p className={`max-w-[34ch] ${TYPE.lead} text-white`}>
               I care about one thing: helping your business grow, in a way you
